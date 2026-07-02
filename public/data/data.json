@@ -1,0 +1,53 @@
+{
+  "destinations": {
+    "bali": [
+      {
+        "id": "b1",
+        "name": "Uluwatu Temple",
+        "category": "Budaya",
+        "description": "Pura indah di atas tebing laut dengan pemandangan matahari terbenam yang spektakuler.",
+        "estimatedCost": 150000,
+        "durationMinutes": 120,
+        "planBName": "GWK Cultural Park (Indoor areas)"
+      },
+      {
+        "id": "b2",
+        "name": "Jimbaran Seafood",
+        "category": "Kuliner",
+        "description": "Makan malam hidangan laut segar di pinggir pantai.",
+        "estimatedCost": 250000,
+        "durationMinutes": 90,
+        "planBName": "Indoor Seafood Restaurant"
+      },
+      {
+        "id": "b3",
+        "name": "Tegallalang Rice Terrace",
+        "category": "Alam",
+        "description": "Terasering sawah ikonik di Ubud.",
+        "estimatedCost": 50000,
+        "durationMinutes": 120,
+        "planBName": "Ubud Art Market"
+      }
+    ],
+    "tokyo": [
+      {
+        "id": "t1",
+        "name": "Senso-ji Temple",
+        "category": "Budaya",
+        "description": "Kuil Buddha kuno di Asakusa.",
+        "estimatedCost": 0,
+        "durationMinutes": 90,
+        "planBName": "Edo-Tokyo Museum"
+      },
+      {
+        "id": "t2",
+        "name": "Shibuya Crossing",
+        "category": "Petualangan",
+        "description": "Persimpangan tersibuk di dunia.",
+        "estimatedCost": 0,
+        "durationMinutes": 45,
+        "planBName": "Shibuya 109 Mall"
+      }
+    ]
+  }
+}
