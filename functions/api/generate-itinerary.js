@@ -5,16 +5,16 @@ export async function onRequestPost(context) {
     const body = await request.json();
     const { destination, days, group, vibe, budget } = body;
     
-    // Validasi input
+    // Input validation
     if (!destination || !days || !group || !vibe || !budget) {
-      return new Response(JSON.stringify({ errors: [{ msg: "Semua data harus diisi" }] }), {
+      return new Response(JSON.stringify({ errors: [{ msg: "All fields are required." }] }), {
         status: 400,
         headers: { "Content-Type": "application/json" }
       });
     }
 
     if (days < 1 || days > 14) {
-      return new Response(JSON.stringify({ errors: [{ msg: "Durasi harus antara 1-14 hari" }] }), {
+      return new Response(JSON.stringify({ errors: [{ msg: "Duration must be between 1 and 14 days." }] }), {
         status: 400,
         headers: { "Content-Type": "application/json" }
       });
@@ -23,36 +23,45 @@ export async function onRequestPost(context) {
     const apiKey = env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: "Server tidak dikonfigurasi dengan API Key. Silakan gunakan data lokal." }), {
+      return new Response(JSON.stringify({ error: "Server is not configured with an API Key. Please use local data." }), {
         status: 500,
         headers: { "Content-Type": "application/json" }
       });
     }
 
-    const prompt = `Anda adalah Expert Travel Planner AI. Buat itinerary perjalanan ke ${destination} selama ${days} hari untuk ${group}. Gaya liburan: ${vibe}. Budget: ${budget}.
+    const prompt = `You are an expert travel planner. Create a travel itinerary to ${destination} for ${days} days for a ${group} trip. Travel style: ${vibe}. Budget tier: ${budget}.
     
-    PENTING (Batasan Sistem):
-    1. Anda tidak boleh merekomendasikan tempat yang ilegal, berbahaya, atau sudah ditutup permanen.
-    2. Rute dan waktu tempuh (durationMinutes) harus realistis dengan memperhitungkan potensi jarak dan kemacetan. Jangan merekomendasikan terlalu banyak tempat dalam sehari jika lokasinya berjauhan.
+    IMPORTANT RULES:
+    1. Determine the country of ${destination} and set "currencyCode" (e.g., USD, JPY, EUR, GBP, IDR, THB, SGD, AUD, KRW) and "currencySymbol" (e.g., $, ¥, €, £, Rp, ฿, S$, A$, ₩) matching that country.
+    2. All "estimatedCost" values for places MUST be given in that local currency (e.g. for Tokyo in JPY ¥, for Paris in EUR €, for Bali in IDR Rp, for New York in USD $).
+    3. Never recommend illegal, dangerous, or permanently closed locations.
+    4. Routes and travel times (durationMinutes, travelTimeToNext) must be realistic, accounting for distance and potential traffic.
+    5. Use varied and realistic durationMinutes for each place. Do NOT use the same duration for every place.
+    6. Write all descriptions in natural, friendly English.
+    7. Categories must be one of: "Culture", "Culinary", "Nature", "Adventure", "Shopping", "Relaxation".
+    8. Include 3-5 practical travel tips specific to ${destination}.
     
-    Output harus dalam format JSON dengan struktur yang tepat (tanpa markdown blok \`\`\`json):
+    Output must be valid JSON (no markdown fences) with this exact structure:
     {
       "destination": "String",
       "days": Number,
       "travelStyle": "String",
       "budget": "String",
       "groupType": "String",
+      "currencyCode": "String",
+      "currencySymbol": "String",
       "packingList": ["String", "String"],
+      "travelTips": ["String", "String", "String"],
       "generatedDays": [
         {
           "dayNumber": Number,
           "places": [
-            { "id": "uuid", "name": "String", "category": "String", "description": "String", "durationMinutes": Number, "estimatedCost": Number, "planBName": "String" }
+            { "id": "uuid", "name": "String", "category": "String", "description": "String", "durationMinutes": Number, "estimatedCost": Number, "travelTimeToNext": Number, "planBName": "String" }
           ]
         }
       ]
     }
-    Hanya kembalikan JSON valid saja, tanpa teks penjelasan tambahan.`;
+    Return only valid JSON, no additional text.`;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
@@ -67,7 +76,7 @@ export async function onRequestPost(context) {
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || "Gagal memanggil API Gemini");
+      throw new Error(data.error?.message || "Failed to call Gemini API.");
     }
 
     const text = data.candidates[0].content.parts[0].text;
@@ -81,8 +90,8 @@ export async function onRequestPost(context) {
     });
 
   } catch (error) {
-    console.error("Error saat generate itinerary:", error.message);
-    return new Response(JSON.stringify({ error: "Gagal membuat itinerary: " + error.message }), {
+    console.error("Error generating itinerary:", error.message);
+    return new Response(JSON.stringify({ error: "Failed to create itinerary: " + error.message }), {
       status: 500,
       headers: { "Content-Type": "application/json" }
     });

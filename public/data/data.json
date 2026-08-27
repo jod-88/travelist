@@ -1,53 +1,96 @@
 {
   "destinations": {
+    "bali": {
+      "currencyCode": "IDR",
+      "currencySymbol": "Rp",
+      "places": [
+        {
+          "id": "b1",
+          "name": "Uluwatu Temple",
+          "category": "Culture",
+          "description": "A stunning clifftop temple with breathtaking sunset views over the Indian Ocean.",
+          "estimatedCost": 150000,
+          "durationMinutes": 120,
+          "travelTimeToNext": 25,
+          "planBName": "GWK Cultural Park (Indoor areas)"
+        },
+        {
+          "id": "b2",
+          "name": "Jimbaran Seafood",
+          "category": "Culinary",
+          "description": "Fresh seafood dinner right on the beach with ocean views.",
+          "estimatedCost": 250000,
+          "durationMinutes": 90,
+          "travelTimeToNext": 35,
+          "planBName": "Indoor Seafood Restaurant"
+        },
+        {
+          "id": "b3",
+          "name": "Tegallalang Rice Terrace",
+          "category": "Nature",
+          "description": "Iconic terraced rice paddies in Ubud, perfect for photos and nature walks.",
+          "estimatedCost": 50000,
+          "durationMinutes": 60,
+          "travelTimeToNext": 15,
+          "planBName": "Ubud Art Market"
+        }
+      ]
+    },
+    "tokyo": {
+      "currencyCode": "JPY",
+      "currencySymbol": "¥",
+      "places": [
+        {
+          "id": "t1",
+          "name": "Senso-ji Temple",
+          "category": "Culture",
+          "description": "Tokyo's oldest Buddhist temple, located in the heart of Asakusa.",
+          "estimatedCost": 0,
+          "durationMinutes": 90,
+          "travelTimeToNext": 30,
+          "planBName": "Edo-Tokyo Museum"
+        },
+        {
+          "id": "t2",
+          "name": "Shibuya Crossing & Sky Deck",
+          "category": "Adventure",
+          "description": "The world's busiest pedestrian crossing & observation deck with panoramic view.",
+          "estimatedCost": 2200,
+          "durationMinutes": 60,
+          "travelTimeToNext": 20,
+          "planBName": "Shibuya 109 Mall"
+        },
+        {
+          "id": "t3",
+          "name": "Tsukiji Outer Market Tasting",
+          "category": "Culinary",
+          "description": "Sample fresh sushi, tamagoyaki, and local street food delicacies.",
+          "estimatedCost": 3500,
+          "durationMinutes": 90,
+          "travelTimeToNext": 25,
+          "planBName": "Ginza Indoor Food Hall"
+        }
+      ]
+    }
+  },
+  "travelTips": {
     "bali": [
-      {
-        "id": "b1",
-        "name": "Uluwatu Temple",
-        "category": "Budaya",
-        "description": "Pura indah di atas tebing laut dengan pemandangan matahari terbenam yang spektakuler.",
-        "estimatedCost": 150000,
-        "durationMinutes": 120,
-        "planBName": "GWK Cultural Park (Indoor areas)"
-      },
-      {
-        "id": "b2",
-        "name": "Jimbaran Seafood",
-        "category": "Kuliner",
-        "description": "Makan malam hidangan laut segar di pinggir pantai.",
-        "estimatedCost": 250000,
-        "durationMinutes": 90,
-        "planBName": "Indoor Seafood Restaurant"
-      },
-      {
-        "id": "b3",
-        "name": "Tegallalang Rice Terrace",
-        "category": "Alam",
-        "description": "Terasering sawah ikonik di Ubud.",
-        "estimatedCost": 50000,
-        "durationMinutes": 120,
-        "planBName": "Ubud Art Market"
-      }
+      "Carry small cash for temple donations and local markets.",
+      "Wear a sarong when visiting temples — many provide them at the entrance.",
+      "Book sunrise hikes to Mount Batur at least a day in advance.",
+      "Try local warungs for authentic and affordable Balinese food."
     ],
     "tokyo": [
-      {
-        "id": "t1",
-        "name": "Senso-ji Temple",
-        "category": "Budaya",
-        "description": "Kuil Buddha kuno di Asakusa.",
-        "estimatedCost": 0,
-        "durationMinutes": 90,
-        "planBName": "Edo-Tokyo Museum"
-      },
-      {
-        "id": "t2",
-        "name": "Shibuya Crossing",
-        "category": "Petualangan",
-        "description": "Persimpangan tersibuk di dunia.",
-        "estimatedCost": 0,
-        "durationMinutes": 45,
-        "planBName": "Shibuya 109 Mall"
-      }
+      "Get a Suica or Pasmo IC card for easy train and bus travel.",
+      "Many restaurants don't accept credit cards — carry yen.",
+      "Visit popular spots early in the morning to avoid crowds.",
+      "Download Google Translate with the Japanese offline pack."
+    ],
+    "default": [
+      "Research local customs and etiquette before your trip.",
+      "Keep digital copies of important documents in the cloud.",
+      "Pack a portable charger — you'll use your phone a lot.",
+      "Learn a few basic phrases in the local language."
     ]
   }
 }

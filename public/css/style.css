@@ -64,9 +64,9 @@ button { font-family: inherit; }
 /* Header */
 .app-header {
   height: 64px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(226, 232, 240, 0.6);
   display: flex;
   justify-content: space-between;
@@ -102,13 +102,10 @@ button { font-family: inherit; }
   gap: 1rem;
 }
 
-.header-badge {
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.375rem 0.875rem;
-  background: linear-gradient(135deg, var(--color-accent-light), var(--color-primary-light));
-  color: var(--color-accent);
-  border-radius: 999px;
+.header-tagline {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-light);
   letter-spacing: 0.02em;
 }
 
