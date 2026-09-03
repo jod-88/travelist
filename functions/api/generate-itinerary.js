@@ -1,10 +1,10 @@
 export async function onRequestPost(context) {
   const { request, env } = context;
-  
+
   try {
     const body = await request.json();
     const { destination, days, group, vibe, budget } = body;
-    
+
     // Input validation
     if (!destination || !days || !group || !vibe || !budget) {
       return new Response(JSON.stringify({ errors: [{ msg: "All fields are required." }] }), {
@@ -63,7 +63,7 @@ export async function onRequestPost(context) {
     }
     Return only valid JSON, no additional text.`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -74,14 +74,14 @@ export async function onRequestPost(context) {
     });
 
     const data = await response.json();
-    
+
     if (!response.ok) {
       throw new Error(data.error?.message || "Failed to call Gemini API.");
     }
 
     const text = data.candidates[0].content.parts[0].text;
     const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
-    
+
     const itineraryData = JSON.parse(jsonStr);
 
     return new Response(JSON.stringify(itineraryData), {

@@ -66,7 +66,11 @@ function renderItineraryView(data) {
       const ul = document.createElement('ul');
       data.travelTips.forEach(tip => {
         const li = document.createElement('li');
-        li.textContent = tip;
+        // Convert **bold** to <strong> tags and remove remaining raw asterisks
+        let cleaned = (tip || '')
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*/g, '');
+        li.innerHTML = cleaned;
         ul.appendChild(li);
       });
       tipsEl.appendChild(ul);

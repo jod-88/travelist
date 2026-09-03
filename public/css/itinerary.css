@@ -2,6 +2,10 @@
    ITINERARY DASHBOARD VIEW
    =========================== */
 
+#itinerary-view {
+  background-color: var(--color-background);
+}
+
 /* Dashboard Hero */
 .dashboard-hero {
   position: relative;
