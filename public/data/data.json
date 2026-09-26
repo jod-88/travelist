@@ -16,9 +16,9 @@
         },
         {
           "id": "b2",
-          "name": "Jimbaran Seafood",
+          "name": "Jimbaran Seafood Beach",
           "category": "Culinary",
-          "description": "Fresh seafood dinner right on the beach with ocean views.",
+          "description": "Fresh seafood dinner right on the beach with ocean views and candlelit tables.",
           "estimatedCost": 250000,
           "durationMinutes": 90,
           "travelTimeToNext": 35,
@@ -33,6 +33,98 @@
           "durationMinutes": 60,
           "travelTimeToNext": 15,
           "planBName": "Ubud Art Market"
+        },
+        {
+          "id": "b4",
+          "name": "Seminyak Beach Sunset",
+          "category": "Relaxation",
+          "description": "Relax on one of Bali's trendiest beaches and watch the famous Seminyak sunset.",
+          "estimatedCost": 100000,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "Ku De Ta Beach Club (covered area)"
+        },
+        {
+          "id": "b5",
+          "name": "Ubud Monkey Forest",
+          "category": "Nature",
+          "description": "Sacred forest sanctuary home to over 700 Balinese long-tailed monkeys.",
+          "estimatedCost": 80000,
+          "durationMinutes": 75,
+          "travelTimeToNext": 10,
+          "planBName": "Ubud Royal Palace"
+        }
+      ]
+    },
+    "jakarta": {
+      "currencyCode": "IDR",
+      "currencySymbol": "Rp",
+      "places": [
+        {
+          "id": "jk1",
+          "name": "Kota Tua (Old Batavia)",
+          "category": "Culture",
+          "description": "Explore the Dutch colonial heart of Jakarta with museums, cafes, and vintage architecture.",
+          "estimatedCost": 50000,
+          "durationMinutes": 120,
+          "travelTimeToNext": 30,
+          "planBName": "Wayang Museum (Indoor)"
+        },
+        {
+          "id": "jk2",
+          "name": "Monas National Monument",
+          "category": "Culture",
+          "description": "Visit Jakarta's iconic 132-meter national monument and its underground museum.",
+          "estimatedCost": 45000,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "National Museum of Indonesia"
+        },
+        {
+          "id": "jk3",
+          "name": "Grand Indonesia Mall",
+          "category": "Shopping",
+          "description": "One of Southeast Asia's largest malls for shopping, dining, and entertainment.",
+          "estimatedCost": 300000,
+          "durationMinutes": 120,
+          "travelTimeToNext": 15,
+          "planBName": "Plaza Indonesia"
+        }
+      ]
+    },
+    "yogyakarta": {
+      "currencyCode": "IDR",
+      "currencySymbol": "Rp",
+      "places": [
+        {
+          "id": "yog1",
+          "name": "Borobudur Temple",
+          "category": "Culture",
+          "description": "The world's largest Buddhist temple, a 9th-century UNESCO World Heritage Site.",
+          "estimatedCost": 350000,
+          "durationMinutes": 150,
+          "travelTimeToNext": 60,
+          "planBName": "Mendut Temple"
+        },
+        {
+          "id": "yog2",
+          "name": "Prambanan Temple Complex",
+          "category": "Culture",
+          "description": "A magnificent 9th-century Hindu temple compound dedicated to the Trimurti.",
+          "estimatedCost": 350000,
+          "durationMinutes": 120,
+          "travelTimeToNext": 45,
+          "planBName": "Sambisari Temple"
+        },
+        {
+          "id": "yog3",
+          "name": "Malioboro Street",
+          "category": "Shopping",
+          "description": "Yogyakarta's legendary shopping street famous for batik, wayang, and street food.",
+          "estimatedCost": 150000,
+          "durationMinutes": 90,
+          "travelTimeToNext": 15,
+          "planBName": "Beringharjo Market"
         }
       ]
     },
@@ -54,7 +146,7 @@
           "id": "t2",
           "name": "Shibuya Crossing & Sky Deck",
           "category": "Adventure",
-          "description": "The world's busiest pedestrian crossing & observation deck with panoramic view.",
+          "description": "The world's busiest pedestrian crossing and an observation deck with panoramic views.",
           "estimatedCost": 2200,
           "durationMinutes": 60,
           "travelTimeToNext": 20,
@@ -69,22 +161,836 @@
           "durationMinutes": 90,
           "travelTimeToNext": 25,
           "planBName": "Ginza Indoor Food Hall"
+        },
+        {
+          "id": "t4",
+          "name": "Shinjuku Gyoen Garden",
+          "category": "Nature",
+          "description": "A stunning national garden blending Japanese, French, and English garden styles.",
+          "estimatedCost": 500,
+          "durationMinutes": 90,
+          "travelTimeToNext": 15,
+          "planBName": "Shinjuku Golden Gai"
+        },
+        {
+          "id": "t5",
+          "name": "TeamLab Planets",
+          "category": "Culture",
+          "description": "An immersive digital art museum with stunning light and water installations.",
+          "estimatedCost": 3200,
+          "durationMinutes": 90,
+          "travelTimeToNext": 35,
+          "planBName": "Mori Art Museum"
+        }
+      ]
+    },
+    "paris": {
+      "currencyCode": "EUR",
+      "currencySymbol": "€",
+      "places": [
+        {
+          "id": "p1",
+          "name": "Eiffel Tower",
+          "category": "Culture",
+          "description": "Climb or admire Paris's iconic iron lattice tower with breathtaking city views.",
+          "estimatedCost": 28,
+          "durationMinutes": 120,
+          "travelTimeToNext": 20,
+          "planBName": "Trocadéro Gardens (view from outside)"
+        },
+        {
+          "id": "p2",
+          "name": "Louvre Museum",
+          "category": "Culture",
+          "description": "The world's largest art museum, home to the Mona Lisa and Venus de Milo.",
+          "estimatedCost": 22,
+          "durationMinutes": 180,
+          "travelTimeToNext": 15,
+          "planBName": "Musée d'Orsay"
+        },
+        {
+          "id": "p3",
+          "name": "Seine River Cruise",
+          "category": "Relaxation",
+          "description": "A scenic boat ride past Notre-Dame, the Louvre, and illuminated Parisian bridges.",
+          "estimatedCost": 18,
+          "durationMinutes": 60,
+          "travelTimeToNext": 25,
+          "planBName": "Walk along Quai de la Seine"
+        },
+        {
+          "id": "p4",
+          "name": "Montmartre & Sacré-Cœur",
+          "category": "Culture",
+          "description": "Explore the artistic hilltop village and the stunning white-domed basilica.",
+          "estimatedCost": 0,
+          "durationMinutes": 120,
+          "travelTimeToNext": 30,
+          "planBName": "Musée de Montmartre"
+        },
+        {
+          "id": "p5",
+          "name": "French Bistro Dinner",
+          "category": "Culinary",
+          "description": "Experience a classic Parisian bistro with steak frites, onion soup, and crème brûlée.",
+          "estimatedCost": 45,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "Brasserie (covered, indoor)"
+        }
+      ]
+    },
+    "london": {
+      "currencyCode": "GBP",
+      "currencySymbol": "£",
+      "places": [
+        {
+          "id": "l1",
+          "name": "Tower of London",
+          "category": "Culture",
+          "description": "A historic castle on the Thames housing the Crown Jewels and 1000 years of history.",
+          "estimatedCost": 30,
+          "durationMinutes": 150,
+          "travelTimeToNext": 25,
+          "planBName": "Museum of London (Free)"
+        },
+        {
+          "id": "l2",
+          "name": "British Museum",
+          "category": "Culture",
+          "description": "One of the world's greatest museums of human history, art, and culture — free entry.",
+          "estimatedCost": 0,
+          "durationMinutes": 150,
+          "travelTimeToNext": 20,
+          "planBName": "Victoria and Albert Museum"
+        },
+        {
+          "id": "l3",
+          "name": "Borough Market",
+          "category": "Culinary",
+          "description": "London's oldest food market overflowing with artisan cheese, street food, and fresh produce.",
+          "estimatedCost": 20,
+          "durationMinutes": 90,
+          "travelTimeToNext": 15,
+          "planBName": "Covent Garden Market"
+        },
+        {
+          "id": "l4",
+          "name": "Hyde Park & Kensington Gardens",
+          "category": "Nature",
+          "description": "Stroll through 350 acres of Royal Park with the Serpentine Lake and Diana Memorial.",
+          "estimatedCost": 0,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "The Natural History Museum (Indoor)"
+        }
+      ]
+    },
+    "singapore": {
+      "currencyCode": "SGD",
+      "currencySymbol": "S$",
+      "places": [
+        {
+          "id": "sg1",
+          "name": "Gardens by the Bay",
+          "category": "Nature",
+          "description": "Futuristic Supertree Grove and world-class indoor gardens on the Marina Bay waterfront.",
+          "estimatedCost": 28,
+          "durationMinutes": 150,
+          "travelTimeToNext": 15,
+          "planBName": "ArtScience Museum"
+        },
+        {
+          "id": "sg2",
+          "name": "Marina Bay Sands SkyPark",
+          "category": "Adventure",
+          "description": "Observe Singapore's skyline from the iconic rooftop observation deck.",
+          "estimatedCost": 26,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "ION Sky Observatory"
+        },
+        {
+          "id": "sg3",
+          "name": "Hawker Centre Food Tour",
+          "category": "Culinary",
+          "description": "Dig into Hainanese chicken rice, laksa, and char kway teow at a legendary hawker centre.",
+          "estimatedCost": 15,
+          "durationMinutes": 90,
+          "travelTimeToNext": 25,
+          "planBName": "Food Republic (Indoor Mall)"
+        },
+        {
+          "id": "sg4",
+          "name": "Sentosa Island",
+          "category": "Adventure",
+          "description": "Sun, beach, Universal Studios, and S.E.A. Aquarium all on one resort island.",
+          "estimatedCost": 45,
+          "durationMinutes": 240,
+          "travelTimeToNext": 30,
+          "planBName": "Resorts World Sentosa (Indoor)"
+        }
+      ]
+    },
+    "bangkok": {
+      "currencyCode": "THB",
+      "currencySymbol": "฿",
+      "places": [
+        {
+          "id": "bk1",
+          "name": "Grand Palace & Wat Phra Kaew",
+          "category": "Culture",
+          "description": "The former royal residence and home to the sacred Emerald Buddha, a Bangkok must-see.",
+          "estimatedCost": 500,
+          "durationMinutes": 150,
+          "travelTimeToNext": 10,
+          "planBName": "National Museum (Indoor)"
+        },
+        {
+          "id": "bk2",
+          "name": "Chao Phraya River Cruise",
+          "category": "Relaxation",
+          "description": "See Bangkok's skyline and riverside temples from a traditional long-tail boat.",
+          "estimatedCost": 300,
+          "durationMinutes": 90,
+          "travelTimeToNext": 25,
+          "planBName": "ICONSIAM Riverside Mall"
+        },
+        {
+          "id": "bk3",
+          "name": "Chatuchak Weekend Market",
+          "category": "Shopping",
+          "description": "One of the world's largest weekend markets with 15,000+ stalls of everything imaginable.",
+          "estimatedCost": 500,
+          "durationMinutes": 150,
+          "travelTimeToNext": 30,
+          "planBName": "MBK Center (Indoor)"
+        },
+        {
+          "id": "bk4",
+          "name": "Pad Thai Cooking Class",
+          "category": "Culinary",
+          "description": "Learn to cook iconic Thai dishes in a hands-on class with a local chef.",
+          "estimatedCost": 1200,
+          "durationMinutes": 180,
+          "travelTimeToNext": 20,
+          "planBName": "Street Food Tour, Yaowarat Chinatown"
+        }
+      ]
+    },
+    "seoul": {
+      "currencyCode": "KRW",
+      "currencySymbol": "₩",
+      "places": [
+        {
+          "id": "se1",
+          "name": "Gyeongbokgung Palace",
+          "category": "Culture",
+          "description": "Seoul's largest royal palace, with hourly guard-changing ceremonies and a folk museum.",
+          "estimatedCost": 3000,
+          "durationMinutes": 120,
+          "travelTimeToNext": 20,
+          "planBName": "National Folk Museum (Indoor)"
+        },
+        {
+          "id": "se2",
+          "name": "Myeongdong Shopping District",
+          "category": "Shopping",
+          "description": "Seoul's most popular shopping area for K-beauty, fashion, and vibrant street food.",
+          "estimatedCost": 50000,
+          "durationMinutes": 120,
+          "travelTimeToNext": 25,
+          "planBName": "Lotte Department Store"
+        },
+        {
+          "id": "se3",
+          "name": "Korean BBQ Dinner",
+          "category": "Culinary",
+          "description": "Grill marinated bulgogi and samgyeopsal tableside in a traditional Korean BBQ restaurant.",
+          "estimatedCost": 30000,
+          "durationMinutes": 90,
+          "travelTimeToNext": 15,
+          "planBName": "Gwangjang Market (Indoor)"
+        },
+        {
+          "id": "se4",
+          "name": "N Seoul Tower (Namsan)",
+          "category": "Adventure",
+          "description": "Ride the cable car up Namsan Mountain for panoramic views and the famous love-lock fence.",
+          "estimatedCost": 21000,
+          "durationMinutes": 90,
+          "travelTimeToNext": 30,
+          "planBName": "63 Building Observatory"
+        }
+      ]
+    },
+    "dubai": {
+      "currencyCode": "AED",
+      "currencySymbol": "AED",
+      "places": [
+        {
+          "id": "db1",
+          "name": "Burj Khalifa & Dubai Fountain",
+          "category": "Adventure",
+          "description": "Ascend the world's tallest building and watch the spectacular fountain show at its base.",
+          "estimatedCost": 149,
+          "durationMinutes": 120,
+          "travelTimeToNext": 15,
+          "planBName": "Dubai Mall (Indoor)"
+        },
+        {
+          "id": "db2",
+          "name": "Dubai Creek & Gold Souk",
+          "category": "Shopping",
+          "description": "Hop on an Abra boat across the historic creek and browse the glittering Gold Souk.",
+          "estimatedCost": 50,
+          "durationMinutes": 120,
+          "travelTimeToNext": 30,
+          "planBName": "Spice Souk (Indoor)"
+        },
+        {
+          "id": "db3",
+          "name": "Desert Safari & BBQ Dinner",
+          "category": "Adventure",
+          "description": "Dune bashing, camel riding, sandboarding, and a traditional dinner under the stars.",
+          "estimatedCost": 250,
+          "durationMinutes": 360,
+          "travelTimeToNext": 60,
+          "planBName": "Ski Dubai (Indoor Snow Park)"
+        },
+        {
+          "id": "db4",
+          "name": "Dubai Frame",
+          "category": "Culture",
+          "description": "Walk across the glass bridge of the 150m picture frame straddling old and new Dubai.",
+          "estimatedCost": 50,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "Museum of the Future"
+        }
+      ]
+    },
+    "new york": {
+      "currencyCode": "USD",
+      "currencySymbol": "$",
+      "places": [
+        {
+          "id": "ny1",
+          "name": "Central Park",
+          "category": "Nature",
+          "description": "Stroll, cycle, or row a boat through 843 acres of iconic urban greenery in Manhattan.",
+          "estimatedCost": 0,
+          "durationMinutes": 120,
+          "travelTimeToNext": 15,
+          "planBName": "Metropolitan Museum of Art (Indoor)"
+        },
+        {
+          "id": "ny2",
+          "name": "Top of the Rock Observatory",
+          "category": "Adventure",
+          "description": "Take in 360-degree views of Manhattan's skyline including the Empire State Building.",
+          "estimatedCost": 40,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "Edge at Hudson Yards"
+        },
+        {
+          "id": "ny3",
+          "name": "Brooklyn Bridge Walk",
+          "category": "Adventure",
+          "description": "Walk across New York's most iconic suspension bridge with panoramic harbor views.",
+          "estimatedCost": 0,
+          "durationMinutes": 60,
+          "travelTimeToNext": 25,
+          "planBName": "DUMBO Indoor Gallery District"
+        },
+        {
+          "id": "ny4",
+          "name": "Chelsea Market Food Tour",
+          "category": "Culinary",
+          "description": "A converted factory packed with artisan food vendors, bakeries, and gourmet shops.",
+          "estimatedCost": 30,
+          "durationMinutes": 90,
+          "travelTimeToNext": 15,
+          "planBName": "Grand Central Market"
+        },
+        {
+          "id": "ny5",
+          "name": "Museum of Modern Art (MoMA)",
+          "category": "Culture",
+          "description": "World-class collection of modern art featuring Picasso, Warhol, Van Gogh, and more.",
+          "estimatedCost": 25,
+          "durationMinutes": 150,
+          "travelTimeToNext": 10,
+          "planBName": "Guggenheim Museum"
+        }
+      ]
+    },
+    "sydney": {
+      "currencyCode": "AUD",
+      "currencySymbol": "A$",
+      "places": [
+        {
+          "id": "sy1",
+          "name": "Sydney Opera House Tour",
+          "category": "Culture",
+          "description": "Tour the iconic sail-shaped masterpiece on Bennelong Point and enjoy its harbour views.",
+          "estimatedCost": 45,
+          "durationMinutes": 90,
+          "travelTimeToNext": 10,
+          "planBName": "Museum of Contemporary Art (Free)"
+        },
+        {
+          "id": "sy2",
+          "name": "Bondi Beach & Coastal Walk",
+          "category": "Nature",
+          "description": "Swim at famous Bondi then walk the spectacular clifftop coastal track to Coogee.",
+          "estimatedCost": 0,
+          "durationMinutes": 180,
+          "travelTimeToNext": 30,
+          "planBName": "Bondi Icebergs Pool"
+        },
+        {
+          "id": "sy3",
+          "name": "Sydney Harbour Bridge Climb",
+          "category": "Adventure",
+          "description": "Climb to the summit of one of the world's most famous steel arch bridges.",
+          "estimatedCost": 300,
+          "durationMinutes": 180,
+          "travelTimeToNext": 15,
+          "planBName": "Pylon Lookout (cheaper option)"
+        },
+        {
+          "id": "sy4",
+          "name": "Darling Harbour Dinner",
+          "category": "Culinary",
+          "description": "Dine at a waterfront restaurant overlooking the illuminated harbour and city lights.",
+          "estimatedCost": 65,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "Chinatown, Haymarket (Indoor)"
+        }
+      ]
+    },
+    "rome": {
+      "currencyCode": "EUR",
+      "currencySymbol": "€",
+      "places": [
+        {
+          "id": "rm1",
+          "name": "Colosseum & Roman Forum",
+          "category": "Culture",
+          "description": "Step into ancient Roman history at the legendary amphitheater and the heart of the Roman Empire.",
+          "estimatedCost": 24,
+          "durationMinutes": 150,
+          "travelTimeToNext": 20,
+          "planBName": "Capitoline Museums (Indoor)"
+        },
+        {
+          "id": "rm2",
+          "name": "Trevi Fountain & Spanish Steps",
+          "category": "Culture",
+          "description": "Toss a coin into the world-famous Baroque fountain and walk the historic 135-step staircase.",
+          "estimatedCost": 0,
+          "durationMinutes": 60,
+          "travelTimeToNext": 15,
+          "planBName": "Galleria Alberto Sordi"
+        },
+        {
+          "id": "rm3",
+          "name": "Trastevere Food & Wine Walk",
+          "category": "Culinary",
+          "description": "Wander cobblestone alleyways savoring authentic carbonara, supplì, and local Roman gelato.",
+          "estimatedCost": 35,
+          "durationMinutes": 90,
+          "travelTimeToNext": 25,
+          "planBName": "Traditional Trastevere Osteria (Indoor)"
+        },
+        {
+          "id": "rm4",
+          "name": "Pantheon & Piazza Navona",
+          "category": "Culture",
+          "description": "Marvel at the world's largest unreinforced concrete dome and Bernini's Fountain of the Four Rivers.",
+          "estimatedCost": 5,
+          "durationMinutes": 75,
+          "travelTimeToNext": 20,
+          "planBName": "San Luigi dei Francesi (Caravaggio paintings)"
+        }
+      ]
+    },
+    "barcelona": {
+      "currencyCode": "EUR",
+      "currencySymbol": "€",
+      "places": [
+        {
+          "id": "bcn1",
+          "name": "Sagrada Família Basilica",
+          "category": "Culture",
+          "description": "Gaudí's iconic, soaring masterpiece of modernisme architecture with rainbow stained glass.",
+          "estimatedCost": 26,
+          "durationMinutes": 120,
+          "travelTimeToNext": 25,
+          "planBName": "Sant Pau Art Nouveau Site"
+        },
+        {
+          "id": "bcn2",
+          "name": "Park Güell Panoramic Walk",
+          "category": "Nature",
+          "description": "Vibrant mosaic terraces and whimsical gingerbread houses overlooking the Mediterranean.",
+          "estimatedCost": 10,
+          "durationMinutes": 90,
+          "travelTimeToNext": 30,
+          "planBName": "Casa Batlló (Covered Tour)"
+        },
+        {
+          "id": "bcn3",
+          "name": "Gothic Quarter & Tapas Evening",
+          "category": "Culinary",
+          "description": "Narrow medieval passages leading to hidden plazas, patatas bravas, and fresh sangria.",
+          "estimatedCost": 30,
+          "durationMinutes": 100,
+          "travelTimeToNext": 15,
+          "planBName": "La Boqueria Market (Covered)"
+        }
+      ]
+    },
+    "amsterdam": {
+      "currencyCode": "EUR",
+      "currencySymbol": "€",
+      "places": [
+        {
+          "id": "ams1",
+          "name": "Rijksmuseum & Museumplein",
+          "category": "Culture",
+          "description": "Admire Rembrandt's Night Watch and world-class Dutch Master masterpieces in grand halls.",
+          "estimatedCost": 22,
+          "durationMinutes": 150,
+          "travelTimeToNext": 15,
+          "planBName": "Van Gogh Museum"
+        },
+        {
+          "id": "ams2",
+          "name": "Jordaan Canal Boat Cruise",
+          "category": "Relaxation",
+          "description": "Glide along UNESCO-listed 17th-century canals past gabled merchant houses and houseboats.",
+          "estimatedCost": 18,
+          "durationMinutes": 75,
+          "travelTimeToNext": 20,
+          "planBName": "Anne Frank House (Indoor)"
+        },
+        {
+          "id": "ams3",
+          "name": "De Pijp Food Tour & Stroopwafels",
+          "category": "Culinary",
+          "description": "Sample warm gooey Dutch stroopwafels, bitterballen, and artisan craft cheeses.",
+          "estimatedCost": 25,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "Albert Cuyp Indoor Cafes"
+        }
+      ]
+    },
+    "kyoto": {
+      "currencyCode": "JPY",
+      "currencySymbol": "¥",
+      "places": [
+        {
+          "id": "kyo1",
+          "name": "Fushimi Inari Taisha (Torii Gates)",
+          "category": "Culture",
+          "description": "Hike through thousands of vermilion torii gates winding up the sacred Mount Inari.",
+          "estimatedCost": 0,
+          "durationMinutes": 120,
+          "travelTimeToNext": 30,
+          "planBName": "Kyoto Railway Museum"
+        },
+        {
+          "id": "kyo2",
+          "name": "Kinkaku-ji (Golden Pavilion)",
+          "category": "Culture",
+          "description": "A Zen Buddhist temple whose top two floors are completely covered in pure gold leaf.",
+          "estimatedCost": 500,
+          "durationMinutes": 75,
+          "travelTimeToNext": 25,
+          "planBName": "Ryoan-ji Zen Rock Garden"
+        },
+        {
+          "id": "kyo3",
+          "name": "Arashiyama Bamboo Grove & Tenryu-ji",
+          "category": "Nature",
+          "description": "Stroll amidst towering green bamboo stalks followed by UNESCO temple gardens and matcha.",
+          "estimatedCost": 600,
+          "durationMinutes": 90,
+          "travelTimeToNext": 35,
+          "planBName": "Gion Covered Arcade & Tea Ceremony"
+        }
+      ]
+    },
+    "berlin": {
+      "currencyCode": "EUR",
+      "currencySymbol": "€",
+      "places": [
+        {
+          "id": "ber1",
+          "name": "Brandenburg Gate & Reichstag",
+          "category": "Culture",
+          "description": "Iconic neoclassical monument and the German Parliament with its futuristic glass dome.",
+          "estimatedCost": 0,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "Pergamonmuseum / Neues Museum"
+        },
+        {
+          "id": "ber2",
+          "name": "East Side Gallery & Spree Walk",
+          "category": "Culture",
+          "description": "The longest remaining section of the Berlin Wall covered in poignant murals and street art.",
+          "estimatedCost": 0,
+          "durationMinutes": 75,
+          "travelTimeToNext": 25,
+          "planBName": "Checkpoint Charlie Museum"
+        },
+        {
+          "id": "ber3",
+          "name": "Kreuzberg Street Food & Craft Beer",
+          "category": "Culinary",
+          "description": "Taste Berlin currywurst, authentic doner kebabs, and local craft brews in a trendy district.",
+          "estimatedCost": 20,
+          "durationMinutes": 90,
+          "travelTimeToNext": 15,
+          "planBName": "Markthalle Neun (Covered Market)"
+        }
+      ]
+    },
+    "florence": {
+      "currencyCode": "EUR",
+      "currencySymbol": "€",
+      "places": [
+        {
+          "id": "flr1",
+          "name": "Duomo di Firenze & Giotto's Bell Tower",
+          "category": "Culture",
+          "description": "Brunelleschi's magnificent terracotta-tiled Renaissance cathedral dominating Florence skyline.",
+          "estimatedCost": 30,
+          "durationMinutes": 120,
+          "travelTimeToNext": 15,
+          "planBName": "Bargello National Museum"
+        },
+        {
+          "id": "flr2",
+          "name": "Uffizi Gallery Masterpieces",
+          "category": "Culture",
+          "description": "World-renowned art museum home to Botticelli's Birth of Venus and Da Vinci paintings.",
+          "estimatedCost": 25,
+          "durationMinutes": 150,
+          "travelTimeToNext": 15,
+          "planBName": "Galleria dell'Accademia (David statue)"
+        },
+        {
+          "id": "flr3",
+          "name": "Ponte Vecchio Sunset & Gelato",
+          "category": "Relaxation",
+          "description": "Medieval stone arch bridge lined with jewelers, offering romantic Arno river sunset views.",
+          "estimatedCost": 8,
+          "durationMinutes": 60,
+          "travelTimeToNext": 20,
+          "planBName": "Mercato Centrale Food Court"
+        }
+      ]
+    },
+    "zurich": {
+      "currencyCode": "CHF",
+      "currencySymbol": "CHF",
+      "places": [
+        {
+          "id": "zrh1",
+          "name": "Old Town (Altstadt) & Grossmünster",
+          "category": "Culture",
+          "description": "Historic cobbled alleys, medieval guild houses, and the twin towers of Grossmünster.",
+          "estimatedCost": 5,
+          "durationMinutes": 90,
+          "travelTimeToNext": 15,
+          "planBName": "Swiss National Museum (Indoor)"
+        },
+        {
+          "id": "zrh2",
+          "name": "Lake Zurich Promenade & Cruise",
+          "category": "Nature",
+          "description": "Scenic boat cruise across pristine glacial waters surrounded by snow-capped Alpine peaks.",
+          "estimatedCost": 22,
+          "durationMinutes": 90,
+          "travelTimeToNext": 20,
+          "planBName": "Kunsthaus Zurich Art Museum"
+        },
+        {
+          "id": "zrh3",
+          "name": "Swiss Fondue & Chocolate Tasting",
+          "category": "Culinary",
+          "description": "Indulge in authentic melted Gruyère cheese fondue and world-famous Swiss pralines.",
+          "estimatedCost": 45,
+          "durationMinutes": 80,
+          "travelTimeToNext": 15,
+          "planBName": "Lindt Home of Chocolate (Indoor)"
+        }
+      ]
+    },
+    "lombok": {
+      "currencyCode": "IDR",
+      "currencySymbol": "Rp",
+      "places": [
+        {
+          "id": "lbk1",
+          "name": "Kuta Beach Lombok & Merese Hill",
+          "category": "Nature",
+          "description": "Spectacular coastal hill with rolling green bluffs and 360-degree ocean views.",
+          "estimatedCost": 20000,
+          "durationMinutes": 120,
+          "travelTimeToNext": 30,
+          "planBName": "Kuta Lombok Indoor Surf Cafe"
+        },
+        {
+          "id": "lbk2",
+          "name": "Gili Trawangan Snorkeling & Turtle Point",
+          "category": "Adventure",
+          "description": "Crystal-clear turquoise waters teeming with sea turtles, coral reefs, and beach vibes.",
+          "estimatedCost": 150000,
+          "durationMinutes": 180,
+          "travelTimeToNext": 45,
+          "planBName": "Gili Island Eco Sanctuary"
+        },
+        {
+          "id": "lbk3",
+          "name": "Sade Traditional Sasak Village",
+          "category": "Culture",
+          "description": "Centuries-old woven bamboo Sasak village demonstrating traditional ikat weaving.",
+          "estimatedCost": 50000,
+          "durationMinutes": 75,
+          "travelTimeToNext": 25,
+          "planBName": "Sukerara Weaving Center (Indoor)"
         }
       ]
     }
   },
   "travelTips": {
+    "rome": [
+      "Book Colosseum and Vatican tickets at least 3 weeks ahead online.",
+      "Dress respectfully when entering churches (knees and shoulders covered).",
+      "Drink from the 'nasoni' public drinking fountains — the water is cold and clean.",
+      "Avoid eating right next to major monuments where prices are inflated."
+    ],
+    "barcelona": [
+      "Book Sagrada Família and Park Güell in advance; tickets sell out days early.",
+      "Beware of pickpockets on Las Ramblas and in crowded metro stations.",
+      "Lunch is usually served 1:30–3:30pm and dinner doesn't start until 8:30–9pm.",
+      "Buy a T-Casual 10-trip card for convenient metro and bus travel."
+    ],
+    "amsterdam": [
+      "Always look both ways for cyclists before crossing — bike paths are serious business.",
+      "Buy museum tickets (Anne Frank, Van Gogh) weeks in advance.",
+      "Rent a bicycle to explore the city like a local.",
+      "Public transit takes contactless debit/credit cards directly at the turnstiles."
+    ],
+    "kyoto": [
+      "Visit Fushimi Inari at dawn (6:00–7:00 AM) to experience the gates without crowds.",
+      "Be respectful of geishas and maikos in Gion — photograph from a polite distance.",
+      "Carry cash for temple admissions as many do not accept credit cards.",
+      "Take local buses or rent an e-bike to navigate Kyoto's flat temple districts."
+    ],
+    "berlin": [
+      "Get a 24-hour or 7-day BVG transit pass for unlimited U-Bahn, S-Bahn, and trams.",
+      "Always validate your train ticket at the yellow/red stamp boxes before boarding.",
+      "Carry cash — many independent cafes, bars, and food stalls do not take cards.",
+      "Most retail shops and supermarkets are strictly closed on Sundays."
+    ],
+    "florence": [
+      "Florence is very compact — walk everywhere instead of taking taxis.",
+      "Reserve entry for the Uffizi and Accademia well in advance to skip hours of queues.",
+      "Head to Piazzale Michelangelo for the finest sunset panorama over the city.",
+      "Try the Florentine steak (Bistecca alla Fiorentina) at a traditional trattoria."
+    ],
+    "zurich": [
+      "Water from the city's 1,200 public fountains is 100% pure Alpine drinking water.",
+      "Use the Zurich Card for free public transit and admission to top museums.",
+      "Swiss public trains run with minute-precise punctuality — never be late.",
+      "Many shops close by 6:30 or 7:00 PM and remain closed all day Sunday."
+    ],
+    "lombok": [
+      "Rent a scooter to explore the south coast beaches around Kuta Lombok.",
+      "Bring cash for local warungs and beach parking attendants.",
+      "Respect local Islamic Sasak customs and dress modestly when outside beach areas.",
+      "Take fast boats between the Gili Islands and Bangsal Harbour."
+    ],
     "bali": [
       "Carry small cash for temple donations and local markets.",
       "Wear a sarong when visiting temples — many provide them at the entrance.",
       "Book sunrise hikes to Mount Batur at least a day in advance.",
       "Try local warungs for authentic and affordable Balinese food."
     ],
+    "jakarta": [
+      "Use Gojek or Grab apps for affordable transport around the city.",
+      "Avoid driving during peak hours (7-9am, 5-8pm) — traffic is severe.",
+      "Bargain at traditional markets but pay fixed prices at malls.",
+      "Stay hydrated — Jakarta is hot and humid year-round."
+    ],
+    "yogyakarta": [
+      "Hire a local guide for Borobudur — they bring the history to life.",
+      "Visit Borobudur at sunrise for the best light and fewer crowds.",
+      "Try gudeg (jackfruit stew) — the signature dish of Yogyakarta.",
+      "Bargain respectfully at Malioboro, prices are usually negotiable."
+    ],
     "tokyo": [
       "Get a Suica or Pasmo IC card for easy train and bus travel.",
       "Many restaurants don't accept credit cards — carry yen.",
       "Visit popular spots early in the morning to avoid crowds.",
       "Download Google Translate with the Japanese offline pack."
+    ],
+    "paris": [
+      "Book Eiffel Tower and Louvre tickets online well in advance.",
+      "Validate your metro ticket before boarding every single time.",
+      "Restaurants are usually closed between 2pm–7pm — plan meals accordingly.",
+      "A simple 'Bonjour' and 'Merci' go a long way with locals."
+    ],
+    "london": [
+      "Get an Oyster card or use contactless to pay for the Tube and buses.",
+      "Many world-class museums (British Museum, Natural History) are free.",
+      "Carry an umbrella — London weather is famously unpredictable.",
+      "Book popular restaurants and attractions well ahead, especially weekends."
+    ],
+    "singapore": [
+      "Singapore's MRT is one of the world's best — use it everywhere.",
+      "Hawker centres are the best value food in the city, from S$3–8 a dish.",
+      "Chewing gum is banned — don't bring it in.",
+      "Download the MyTransport.SG app for real-time bus arrival times."
+    ],
+    "bangkok": [
+      "Take the BTS Skytrain or MRT to avoid Bangkok's notorious traffic jams.",
+      "Always negotiate tuk-tuk fares before you get in.",
+      "Dress modestly when visiting temples — shoulders and knees must be covered.",
+      "Eat where the locals eat — street food stalls are cheap and delicious."
+    ],
+    "seoul": [
+      "Get a T-money card for seamless subway and bus travel.",
+      "Download Naver Maps — Google Maps coverage is limited in Korea.",
+      "Convenience stores (CU, GS25) serve surprisingly good and cheap hot food.",
+      "Visit Gyeongbokgung in hanbok for free entry — rentals are nearby."
+    ],
+    "dubai": [
+      "Dress modestly in traditional souks and public places.",
+      "The Dubai Metro is clean, cheap, and has women-only carriages.",
+      "Book the desert safari through a reputable agency to avoid scams.",
+      "Carry cash for souks but cards are accepted almost everywhere else."
+    ],
+    "new york": [
+      "Get a MetroCard or tap your contactless card on the subway — it's the fastest way around.",
+      "Many top museums offer free or pay-what-you-wish entry on certain evenings.",
+      "Walk between nearby attractions — NYC is very walkable in good weather.",
+      "Book popular restaurants weeks in advance, especially for weekends."
+    ],
+    "sydney": [
+      "Get an Opal card for trains, buses, and ferries across the network.",
+      "The Bondi to Coogee coastal walk is free and absolutely stunning.",
+      "Book Harbour Bridge Climb months ahead — it sells out fast.",
+      "Australian sun is extremely strong — wear SPF 50+ sunscreen."
     ],
     "default": [
       "Research local customs and etiquette before your trip.",
@@ -94,3 +1000,4 @@
     ]
   }
 }
+

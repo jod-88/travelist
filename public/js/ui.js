@@ -24,10 +24,83 @@ function switchView(viewId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+const FAMOUS_DESTINATION_HIGHLIGHTS = {
+  'rome': '🏛️ The Eternal City — Renowned for ancient gladiators, Baroque fountains & timeless Roman gastronomy',
+  'tokyo': '🗼 Vibrant Metropolis — Famous for historic shrines, futuristic neon skylines & culinary mastery',
+  'paris': '✨ The City of Light — Celebrated for iconic landmarks, romantic boulevards & world-class art',
+  'bali': '🌺 Island of the Gods — Famed for clifftop ocean temples, emerald rice terraces & sacred culture',
+  'london': '👑 Historic Crown Jewel — Renowned for royal palaces, world-class theatre & storied pubs',
+  'barcelona': '🎨 Catalan Masterpiece — Famous for Gaudí architecture, Mediterranean beaches & vibrant tapas',
+  'kyoto': '⛩️ Ancient Imperial Capital — Celebrated for thousand-torii shrines, zen gardens & geisha districts',
+  'new york': '🗽 The City That Never Sleeps — Famed for Broadway, Central Park & towering iconic skylines',
+  'dubai': '✨ Oasis of Modern Wonder — Renowned for soaring skyscrapers, luxury souks & desert safaris',
+  'bangkok': '🏯 City of Angels — Famous for shimmering golden temples, floating markets & street food feasts',
+  'singapore': '🌿 The Garden City — Celebrated for futuristic supertrees, Marina Bay & vibrant hawker food',
+  'sydney': '🌊 Harbour Marvel — Famous for the iconic Opera House, Bondi surf & sun-kissed bays',
+  'amsterdam': '🚲 Venice of the North — Renowned for UNESCO canal rings, Dutch Master art & cycling culture',
+  'berlin': '🇩🇪 Capital of Freedom & Art — Famous for monumental history, underground culture & sprawling parks',
+  'florence': '🎨 Cradle of the Renaissance — Celebrated for Michelangelo\'s masterpieces & Tuscan delicacies',
+  'zurich': '🏔️ Alpine Gateway — Renowned for crystal-clear lakes, mountain panoramas & Swiss chocolate',
+  'lombok': '🏝️ Untouched Tropical Gem — Famed for turquoise bays, Mount Rinjani & white sand shores',
+  'jakarta': '🌆 The Big Durian — Dynamic metropolis blending colonial heritage, modern towers & street flavours',
+  'yogyakarta': '🏺 Cultural Heart of Java — Famous for ancient Borobudur temple, batik craft & royal heritage',
+  'venice': '🛶 Floating City of Canals — Celebrated for historic bridges, romantic gondolas & Venetian palaces',
+  'milan': '👗 Global Fashion Capital — Famous for the soaring Duomo, designer boutiques & Renaissance culture',
+  'santorini': '🌅 Aegean Jewel — Renowned for whitewashed cliffside villages, blue domes & world-famous sunsets',
+  'seoul': '⚡ Dynamic Trendsetter — Famous for historic palaces, K-culture, night markets & street food',
+  'istanbul': '🕌 Where East Meets West — Celebrated for the Hagia Sophia, Grand Bazaar & Bosphorus views',
+  'vienna': '🎶 Imperial City of Music — Renowned for opulent palaces, classical symphonies & grand coffee houses',
+  'prague': '🏰 City of a Hundred Spires — Famous for Charles Bridge, fairy-tale castles & bohemian beer',
+  'cairo': '🐪 Gateway to the Pharaohs — Celebrated for the Pyramids of Giza, the Nile River & ancient wonders',
+  'hawaii': '🏄 Paradise of the Pacific — Famous for volcanic peaks, world-class surf & warm aloha spirit',
+  'honolulu': '🏄 Paradise of the Pacific — Famous for Waikiki Beach, Diamond Head & warm aloha spirit',
+  'maldives': '🏝️ Turquoise Haven — Renowned for overwater villas, vibrant coral reefs & pure tropical tranquility',
+  'phuket': '🏖️ Andaman Pearl — Famous for limestone karst bays, sun-drenched beaches & vibrant nightlife',
+  'cancun': '🌴 Mayan Coast Jewel — Renowned for turquoise Caribbean waters, white sand & ancient Mayan ruins',
+  'cape town': '⛰️ The Mother City — Celebrated for Table Mountain, dramatic coastal drives & penguin colonies',
+  'reykjavik': '🌋 Land of Fire & Ice — Famous for the Northern Lights, geothermal hot springs & dramatic glaciers',
+  'switzerland': '🏔️ Alpine Wonderland — Renowned for snow-capped peaks, pristine glacial lakes & luxury trains',
+  'japan': '🌸 Land of the Rising Sun — Celebrated for ancient traditions, futuristic cities & exquisite cuisine',
+  'italy': '🍕 Bel Paese — World-renowned for Renaissance art, ancient history & unmatched culinary traditions'
+};
+
+function getDestinationHighlight(data) {
+  if (data.tagline && data.tagline.trim()) return data.tagline;
+  if (data.famousFor && data.famousFor.trim()) return data.famousFor;
+
+  const destLower = (data.destination || '').toLowerCase().trim();
+
+  for (const [key, desc] of Object.entries(FAMOUS_DESTINATION_HIGHLIGHTS)) {
+    if (destLower.includes(key) || key.includes(destLower)) {
+      return desc;
+    }
+  }
+
+  const destTitle = data.destination || 'This Destination';
+  const vibe = (data.travelStyle || '').toLowerCase();
+
+  if (vibe.includes('cultur') || vibe.includes('heritage')) {
+    return `🏛️ ${destTitle} — Renowned for its rich historic landmarks, iconic architecture & cultural heritage`;
+  } else if (vibe.includes('culin') || vibe.includes('food')) {
+    return `🍜 ${destTitle} — Celebrated for authentic regional delicacies, vibrant food markets & culinary culture`;
+  } else if (vibe.includes('adventur')) {
+    return `🧗 ${destTitle} — Famous for thrilling outdoor exploration, scenic trails & memorable excursions`;
+  } else if (vibe.includes('relax')) {
+    return `🏖️ ${destTitle} — A tranquil escape known for scenic vistas, peaceful atmosphere & unwinding in style`;
+  }
+
+  return `✨ ${destTitle} — Famous for captivating sights, distinctive local character & unforgettable travel moments`;
+}
+
 function renderItineraryView(data) {
   // Update Hero info
   document.getElementById('itinerary-title').textContent = data.destination;
-  document.getElementById('itinerary-meta').textContent = `${data.days} Days • ${data.travelStyle} • ${data.budget}`;
+  
+  // Set evocative destination highlight instead of repeating personalization tags
+  const metaEl = document.getElementById('itinerary-meta');
+  if (metaEl) {
+    metaEl.textContent = getDestinationHighlight(data);
+  }
 
   // Render Hero Pill Badges
   const pillsContainer = document.getElementById('hero-pills');
@@ -39,6 +112,9 @@ function renderItineraryView(data) {
       { icon: '💰', text: data.budget },
       { icon: '👥', text: data.groupType || 'Solo' }
     ];
+    if (data.currencyCode) {
+      pillData.push({ icon: '💱', text: `${data.currencyCode} (${data.currencySymbol || ''})` });
+    }
     pillData.forEach(pill => {
       const el = document.createElement('span');
       el.className = 'hero-pill';
