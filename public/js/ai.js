@@ -384,6 +384,35 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
     ];
   }
 
+  // Determine places per day based on total days to keep it balanced
+  let placesPerDay = 4;
+  if (days >= 7) {
+    placesPerDay = 2;
+  } else if (days >= 4) {
+    placesPerDay = 3;
+  }
+  
+  const totalNeeded = days * placesPerDay;
+  const destTitle = destination.charAt(0).toUpperCase() + destination.slice(1);
+  const baseCostUnit = currencyCode === 'IDR' ? 100000 : (currencyCode === 'JPY' ? 1500 : (currencyCode === 'KRW' ? 15000 : 25));
+  const categories = ["Culture", "Culinary", "Relaxation", "Nature", "Shopping", "Adventure"];
+
+  // Ensure we have exactly totalNeeded unique places by dynamically generating more if needed
+  while (rawPlaces.length < totalNeeded) {
+    let idx = rawPlaces.length;
+    let cat = categories[idx % categories.length];
+    rawPlaces.push({
+      id: `dyn-gen-${idx}`,
+      name: `${destTitle} ${cat} Highlight ${idx + 1}`,
+      category: cat,
+      description: `Discover another wonderful ${cat.toLowerCase()} side of ${destTitle}, perfect for extending your trip.`,
+      estimatedCost: Math.round(baseCostUnit * (0.8 + (idx % 3) * 0.4)),
+      durationMinutes: 90 + (idx % 3) * 15,
+      travelTimeToNext: 15 + (idx % 4) * 5,
+      planBName: `${destTitle} Indoor ${cat} Area`
+    });
+  }
+
   // Adjust place costs to match currency & budget tier
   const places = rawPlaces.map(p => {
     let cost = Math.round(p.estimatedCost * budgetScale);
@@ -403,23 +432,21 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
     };
   });
 
-  const PLACES_PER_DAY = 4; // how many places to show per day
   const generatedDays = [];
+  let placeCounter = 0;
 
   for (let i = 1; i <= days; i++) {
-    // Offset the starting position so each day begins on a different place
-    const offset = ((i - 1) * PLACES_PER_DAY) % places.length;
-
-    // Build this day's places by rotating through the pool
     const dayPlaces = [];
-    for (let j = 0; j < PLACES_PER_DAY; j++) {
-      const placeIndex = (offset + j) % places.length;
-      const p = places[placeIndex];
-      dayPlaces.push({
-        ...p,
-        id: `${p.id}-d${i}-${j}`,
-        travelTimeToNext: p.travelTimeToNext || (15 + ((j * 7) % 25))
-      });
+    for (let j = 0; j < placesPerDay; j++) {
+      if (placeCounter < places.length) {
+        const p = places[placeCounter];
+        dayPlaces.push({
+          ...p,
+          id: `${p.id}-d${i}-${j}`,
+          travelTimeToNext: p.travelTimeToNext || (15 + ((j * 7) % 25))
+        });
+        placeCounter++;
+      }
     }
 
     generatedDays.push({
