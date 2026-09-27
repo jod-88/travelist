@@ -42,8 +42,8 @@ function extractJsonFromText(rawText) {
 /**
  * Direct Gemini API call from the client (used for Live Server or static hosting environments)
  */
-async function callGeminiDirect(destination, days, group, vibe, budget) {
-  const apiKey = localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
+async function callGeminiDirect(destination, days, group, vibe, budget, apiKey) {
+  apiKey = apiKey || localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
   if (!apiKey) throw new Error("No Gemini API key available.");
 
   const prompt = `You are an expert travel planner. Create an authentic, realistic travel itinerary to ${destination} for ${days} days for a ${group} trip. Travel style: ${vibe}. Budget tier: ${budget}.
@@ -91,8 +91,8 @@ Output must be valid JSON with this exact structure:
 }
 Return only valid JSON, no conversational markdown.`;
 
-  // Candidate models in priority order
-  const candidateModels = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-3.8-flash'];
+  // Candidate models in priority order (gemini-2.5-flash is best; fallback to stable ones)
+  const candidateModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash-latest'];
   let lastError = null;
 
   for (const model of candidateModels) {
@@ -150,48 +150,62 @@ Return only valid JSON, no conversational markdown.`;
  * 3. Smart local destination fallback (offline / completely no network)
  */
 async function generateItinerary(destination, days, group, vibe, budget) {
-  // Step 1: Try serverless endpoint (/api/generate-itinerary)
-  let backendFailed = false;
-
+  // Step 1: Try Cloudflare Pages Function (/api/generate-itinerary)
   try {
     const response = await fetch('/api/generate-itinerary', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        destination, days, group, vibe, budget
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ destination, days, group, vibe, budget })
     });
 
     const contentType = response.headers.get('content-type') || '';
-    // If running on a static server like VS Code Live Server, /api returns 404 or an HTML error page
+
+    // Local dev (VS Code Live Server) — no /api endpoint exists
     if (response.status === 404 || contentType.includes('text/html')) {
-      backendFailed = true;
+      // Fall through to Step 2
     } else if (response.ok) {
       const data = await response.json();
       if (data && data.generatedDays && data.generatedDays.length > 0) {
-        return data;
+        return data; // ✅ Primary path succeeded
       }
+      // CF function returned 200 but bad/empty data — fall through
     } else {
-      console.warn("Backend /api returned non-ok status:", response.status);
-      backendFailed = true;
+      // CF function returned an error (e.g. Gemini API key issue, rate limit)
+      const errData = await response.json().catch(() => ({}));
+      const errMsg = errData?.error || errData?.errors?.[0]?.msg || `Server error ${response.status}`;
+      console.warn('CF /api error:', errMsg, '— trying direct Gemini...');
+      // Fall through to Step 2, but surface this error if Step 2 also fails
     }
   } catch (netErr) {
-    backendFailed = true;
+    console.warn('CF /api network error:', netErr.message);
   }
 
-  // Step 2: Direct client-side Gemini API call
-  try {
-    const aiData = await callGeminiDirect(destination, days, group, vibe, budget);
-    if (aiData && aiData.generatedDays && aiData.generatedDays.length > 0) {
-      return aiData;
+  // Step 2: Direct Gemini API call (client-side key or fallback relay)
+  // On Cloudflare Pages, try fetching the key via a relay endpoint
+  let clientKey = localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
+  if (!clientKey) {
+    try {
+      const keyResp = await fetch('/api/gemini-key');
+      if (keyResp.ok) {
+        const keyData = await keyResp.json();
+        clientKey = keyData?.key || '';
+      }
+    } catch (_) {}
+  }
+
+  if (clientKey) {
+    try {
+      const aiData = await callGeminiDirect(destination, days, group, vibe, budget, clientKey);
+      if (aiData && aiData.generatedDays && aiData.generatedDays.length > 0) {
+        return aiData; // ✅ Direct Gemini succeeded
+      }
+    } catch (geminiErr) {
+      console.warn('Direct Gemini error:', geminiErr.message);
     }
-  } catch (geminiErr) {
-    console.warn("Direct Gemini call was not completed, using smart local fallback:", geminiErr.message);
   }
 
-  // Step 3: Smart destination-aware local fallback
+  // Step 3: Offline local fallback — only when genuinely no network/API
+  console.error('All AI paths failed — using local mock itinerary.');
   return generateMockItinerary(destination, days, group, vibe, budget);
 }
 

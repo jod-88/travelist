@@ -88,7 +88,7 @@ async function handleRequest(request, env) {
     Return only valid JSON, no additional text.`;
 
   // Candidate models in priority order
-  const candidateModels = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-3.8-flash'];
+  const candidateModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash-latest'];
   let geminiResponse = null;
   let geminiData = null;
   let lastError = null;
@@ -143,8 +143,11 @@ async function handleRequest(request, env) {
   // Extract and parse the generated itinerary JSON
   try {
     const text = geminiData.candidates[0].content.parts[0].text;
-    // Strip markdown code fences if present
-    const jsonStr = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+    // Strip markdown fences robustly before parsing
+    const jsonStr = text
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```\s*$/i, '')
+      .trim();
     const itineraryData = JSON.parse(jsonStr);
 
     return new Response(JSON.stringify(itineraryData), {
