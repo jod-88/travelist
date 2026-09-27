@@ -403,15 +403,25 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
     };
   });
 
+  const PLACES_PER_DAY = 4; // how many places to show per day
   const generatedDays = [];
+
   for (let i = 1; i <= days; i++) {
-    // Rotate and pick places for each day so multi-day trips look dynamic
-    const dayPlaces = places.map((p, idx) => ({
-      ...p,
-      id: `${p.id}-d${i}-${idx}`,
-      travelTimeToNext: p.travelTimeToNext || (15 + ((idx * 7) % 25))
-    }));
-    
+    // Offset the starting position so each day begins on a different place
+    const offset = ((i - 1) * PLACES_PER_DAY) % places.length;
+
+    // Build this day's places by rotating through the pool
+    const dayPlaces = [];
+    for (let j = 0; j < PLACES_PER_DAY; j++) {
+      const placeIndex = (offset + j) % places.length;
+      const p = places[placeIndex];
+      dayPlaces.push({
+        ...p,
+        id: `${p.id}-d${i}-${j}`,
+        travelTimeToNext: p.travelTimeToNext || (15 + ((j * 7) % 25))
+      });
+    }
+
     generatedDays.push({
       dayNumber: i,
       places: dayPlaces
