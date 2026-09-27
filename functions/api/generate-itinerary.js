@@ -86,8 +86,8 @@ async function handleRequest(request, env) {
     }
     Return only valid JSON, no additional text.`;
 
-  // Candidate models in priority order
-  const candidateModels = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-3.8-flash'];
+  // Candidate models in priority order (valid Google AI Studio models)
+  const candidateModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
   let geminiResponse = null;
   let geminiData = null;
   let lastError = null;
@@ -142,9 +142,27 @@ async function handleRequest(request, env) {
   // Extract and parse the generated itinerary JSON
   try {
     const text = geminiData.candidates[0].content.parts[0].text;
-    // Strip markdown code fences if present
-    const jsonStr = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-    const itineraryData = JSON.parse(jsonStr);
+    
+    let itineraryData;
+    // 1. Try direct parse
+    try {
+      itineraryData = JSON.parse(text.trim());
+    } catch (e1) {
+      // 2. Try markdown fence extraction
+      const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+      if (fenceMatch && fenceMatch[1]) {
+        itineraryData = JSON.parse(fenceMatch[1].trim());
+      } else {
+        // 3. Try finding the outer braces
+        const start = text.indexOf('{');
+        const end = text.lastIndexOf('}');
+        if (start !== -1 && end !== -1 && end > start) {
+          itineraryData = JSON.parse(text.slice(start, end + 1));
+        } else {
+          throw new Error("Could not locate JSON in response");
+        }
+      }
+    }
 
     return new Response(JSON.stringify(itineraryData), {
       status: 200,

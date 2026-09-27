@@ -90,8 +90,8 @@ Output must be valid JSON with this exact structure:
 }
 Return only valid JSON, no conversational markdown.`;
 
-  // Candidate models in priority order
-  const candidateModels = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-3.8-flash'];
+  // Candidate models in priority order (valid Google AI Studio models)
+  const candidateModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
   let lastError = null;
 
   for (const model of candidateModels) {
