@@ -240,6 +240,24 @@ function getCountryCurrency(destinationStr) {
   if (dest.includes('toronto') || dest.includes('vancouver') || dest.includes('canada') || dest.includes('montreal')) {
     return { code: 'CAD', symbol: 'C$', multiplier: 1.36 };
   }
+  if (dest.includes('beijing') || dest.includes('shanghai') || dest.includes('china') || dest.includes('guangzhou') || dest.includes('shenzhen')) {
+    return { code: 'CNY', symbol: '¥', multiplier: 7.2 };
+  }
+  if (dest.includes('malaysia') || dest.includes('kuala lumpur') || dest.includes('penang')) {
+    return { code: 'MYR', symbol: 'RM', multiplier: 4.7 };
+  }
+  if (dest.includes('vietnam') || dest.includes('hanoi') || dest.includes('ho chi minh') || dest.includes('saigon') || dest.includes('da nang')) {
+    return { code: 'VND', symbol: '₫', multiplier: 25000 };
+  }
+  if (dest.includes('india') || dest.includes('delhi') || dest.includes('mumbai') || dest.includes('goa') || dest.includes('bangalore')) {
+    return { code: 'INR', symbol: '₹', multiplier: 83 };
+  }
+  if (dest.includes('philippines') || dest.includes('manila') || dest.includes('cebu') || dest.includes('boracay')) {
+    return { code: 'PHP', symbol: '₱', multiplier: 56 };
+  }
+  if (dest.includes('new zealand') || dest.includes('auckland') || dest.includes('queenstown') || dest.includes('wellington')) {
+    return { code: 'NZD', symbol: 'NZ$', multiplier: 1.65 };
+  }
   
   // Default to USD
   return { code: 'USD', symbol: '$', multiplier: 1 };
@@ -320,60 +338,7 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
     const destTitle = destination.charAt(0).toUpperCase() + destination.slice(1);
     
     // Scale base price to currency
-    const baseCostUnit = currencyCode === 'IDR' ? 100000 : (currencyCode === 'JPY' ? 1500 : (currencyCode === 'KRW' ? 15000 : 25));
-
-    rawPlaces = [
-      {
-        id: "dyn-1",
-        name: `${destTitle} Historic Old Town & Heritage Square`,
-        category: "Culture",
-        description: `Explore the iconic historic architecture, cobblestone avenues, and cultural heritage of central ${destTitle}.`,
-        estimatedCost: Math.round(baseCostUnit * 0.8),
-        durationMinutes: 120,
-        travelTimeToNext: 20,
-        planBName: `${destTitle} Municipal History Museum (Indoor)`
-      },
-      {
-        id: "dyn-2",
-        name: `${destTitle} Famous Food Trail & Local Market`,
-        category: "Culinary",
-        description: `Savor authentic regional dishes, artisan street delicacies, and traditional specialties in ${destTitle}.`,
-        estimatedCost: Math.round(baseCostUnit * 1.4),
-        durationMinutes: 90,
-        travelTimeToNext: 25,
-        planBName: `Covered Gastronomy Market Hall`
-      },
-      {
-        id: "dyn-3",
-        name: `${destTitle} Scenic Waterfront & Central Promenade`,
-        category: "Relaxation",
-        description: `Unwind with picturesque waterfront views, vibrant public squares, and relaxing open spaces.`,
-        estimatedCost: 0,
-        durationMinutes: 75,
-        travelTimeToNext: 20,
-        planBName: `Waterfront Glasshouse Cafe`
-      },
-      {
-        id: "dyn-4",
-        name: `${destTitle} Panoramic Viewpoint & Botanical Gardens`,
-        category: "Nature",
-        description: `Breathtaking elevated vistas overlooking ${destTitle} alongside lush landscaped gardens and pathways.`,
-        estimatedCost: Math.round(baseCostUnit * 0.5),
-        durationMinutes: 90,
-        travelTimeToNext: 30,
-        planBName: `Conservatory & Indoor Pavilions`
-      },
-      {
-        id: "dyn-5",
-        name: `${destTitle} Arts & Boutique Quarter`,
-        category: "Shopping",
-        description: `Browse local artisan craft shops, independent galleries, and stylish boutiques unique to ${destTitle}.`,
-        estimatedCost: Math.round(baseCostUnit * 1.2),
-        durationMinutes: 100,
-        travelTimeToNext: 15,
-        planBName: `${destTitle} Contemporary Art Gallery`
-      }
-    ];
+    const baseCostUnit = currencyCode === 'IDR' ? 100000 : (currencyCode === 'JPY' || currencyCode === 'CNY' ? 1500 : (currencyCode === 'KRW' ? 15000 : (currencyCode === 'VND' ? 200000 : 25)));
 
     tips = [
       `Check local transit cards and day passes for easy travel around ${destTitle}.`,
@@ -381,6 +346,76 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
       `Reserve top attractions and famous restaurants in ${destTitle} ahead of time.`,
       `Learn basic greeting phrases in the local language to connect with residents.`
     ];
+  }
+
+  // Determine places per day based on total days to keep it balanced
+  let placesPerDay = 4;
+  if (days >= 7) {
+    placesPerDay = 2;
+  } else if (days >= 4) {
+    placesPerDay = 3;
+  }
+  
+  const totalNeeded = days * placesPerDay;
+  const destTitle = destination.charAt(0).toUpperCase() + destination.slice(1);
+  const baseCostUnit = currencyCode === 'IDR' ? 100000 : (currencyCode === 'JPY' || currencyCode === 'CNY' ? 1500 : (currencyCode === 'KRW' ? 15000 : (currencyCode === 'VND' ? 200000 : 25)));
+  
+  // Rich name templates for dynamic fallback generation so names are natural and varied
+  const nameTemplates = {
+    "Culture": [
+      "Historic Old Town of {dest}", "Royal Palace & Heritage Museum in {dest}", "{dest} Ancient Temple Complex",
+      "National Art Gallery of {dest}", "Traditional {dest} Village Walk", "{dest} Cultural Performance Theater",
+      "The Great {dest} Monument", "{dest} Museum of Natural History"
+    ],
+    "Culinary": [
+      "{dest} Famous Night Market", "Authentic {dest} Street Food Alley", "High-End Gastronomy in {dest}",
+      "{dest} Central Farmers Market", "Hidden Local Cafes of {dest}", "{dest} Spice & Ingredient Tour",
+      "Riverside Seafood Dining in {dest}", "Traditional {dest} Tea House"
+    ],
+    "Nature": [
+      "{dest} Grand Botanical Gardens", "Panoramic Peak Viewpoint over {dest}", "{dest} National Forest Park",
+      "Scenic Lake & Trails of {dest}", "{dest} Coastal Walk", "Hidden Waterfall near {dest}",
+      "{dest} Wildlife Sanctuary", "Crystal Clear Lakes of {dest}"
+    ],
+    "Adventure": [
+      "{dest} Skyline Observation Deck", "Theme Park & Thrill Rides in {dest}", "{dest} Off-Road Safari",
+      "Mountain Cable Car of {dest}", "{dest} Bridge Climb Experience", "River Rafting & Kayaking in {dest}",
+      "Underground Caves of {dest}", "Zip Lining Across {dest} Valleys"
+    ],
+    "Shopping": [
+      "{dest} Grand Shopping Boulevard", "Vintage & Antiques Quarter in {dest}", "{dest} Luxury Retail District",
+      "Traditional Handicraft Souk in {dest}", "{dest} Fashion & Design Hub", "The Mega Mall of {dest}",
+      "{dest} Weekend Artisan Market", "Boutique Alleyways in {dest}"
+    ],
+    "Relaxation": [
+      "{dest} Thermal Baths & Spa", "Sunset Cruise in {dest}", "{dest} Private Beach Club",
+      "Rooftop Lounge & Bar in {dest}", "Tranquil Zen Gardens of {dest}", "{dest} Riverfront Promenade",
+      "Secluded Hot Springs near {dest}", "Luxury Wellness Retreat in {dest}"
+    ]
+  };
+
+  const categories = ["Culture", "Culinary", "Relaxation", "Nature", "Shopping", "Adventure"];
+
+  // Ensure we have exactly totalNeeded unique places by dynamically generating them
+  let catCounts = { "Culture": 0, "Culinary": 0, "Relaxation": 0, "Nature": 0, "Shopping": 0, "Adventure": 0 };
+  
+  while (rawPlaces.length < totalNeeded) {
+    let cat = categories[rawPlaces.length % categories.length];
+    let count = catCounts[cat]++;
+    let templates = nameTemplates[cat];
+    let template = templates[count % templates.length];
+    let placeName = template.replace(/{dest}/g, destTitle);
+
+    rawPlaces.push({
+      id: `dyn-gen-${rawPlaces.length}`,
+      name: placeName,
+      category: cat,
+      description: `Discover an amazing ${cat.toLowerCase()} experience at this renowned spot in ${destTitle}.`,
+      estimatedCost: Math.round(baseCostUnit * (0.8 + (count % 3) * 0.4)),
+      durationMinutes: 90 + (count % 3) * 15,
+      travelTimeToNext: 15 + (count % 4) * 5,
+      planBName: `${destTitle} Indoor ${cat} Pavilion`
+    });
   }
 
   // Adjust place costs to match currency & budget tier
@@ -403,14 +438,22 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
   });
 
   const generatedDays = [];
+  let placeCounter = 0;
+
   for (let i = 1; i <= days; i++) {
-    // Rotate and pick places for each day so multi-day trips look dynamic
-    const dayPlaces = places.map((p, idx) => ({
-      ...p,
-      id: `${p.id}-d${i}-${idx}`,
-      travelTimeToNext: p.travelTimeToNext || (15 + ((idx * 7) % 25))
-    }));
-    
+    const dayPlaces = [];
+    for (let j = 0; j < placesPerDay; j++) {
+      if (placeCounter < places.length) {
+        const p = places[placeCounter];
+        dayPlaces.push({
+          ...p,
+          id: `${p.id}-d${i}-${j}`,
+          travelTimeToNext: p.travelTimeToNext || (15 + ((j * 7) % 25))
+        });
+        placeCounter++;
+      }
+    }
+
     generatedDays.push({
       dayNumber: i,
       places: dayPlaces
