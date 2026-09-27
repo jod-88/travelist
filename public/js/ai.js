@@ -1,4 +1,4 @@
-﻿// ai.js - Handles Gemini API interaction (Cloudflare Pages Function, Direct Client Gemini API, or Smart Fallback)
+// ai.js - Handles Gemini API interaction (Cloudflare Pages Function, Direct Client Gemini API, or Smart Fallback)
 
 const DEFAULT_GEMINI_KEY = '';
 
@@ -49,8 +49,8 @@ async function callGeminiDirect(destination, days, group, vibe, budget) {
   const prompt = `You are an expert travel planner. Create an authentic, realistic travel itinerary to ${destination} for ${days} days for a ${group} trip. Travel style: ${vibe}. Budget tier: ${budget}.
     
 IMPORTANT RULES:
-1. Determine the country and local currency of ${destination}. Set "currencyCode" (e.g., USD, JPY, EUR, GBP, IDR, THB, SGD, AUD, KRW, CHF, CAD) and "currencySymbol" (e.g., $, ┬Ñ, Ôé¼, ┬ú, Rp, Ó©┐, S$, A$, Ôé®, CHF, C$).
-2. All "estimatedCost" values for places MUST be given in that local currency (e.g. for Tokyo in JPY ┬Ñ, for Paris or Rome in EUR Ôé¼, for Bali/Jakarta in IDR Rp, for London in GBP ┬ú, for New York in USD $).
+1. Determine the country and local currency of ${destination}. Set "currencyCode" (e.g., USD, JPY, EUR, GBP, IDR, THB, SGD, AUD, KRW, CHF, CAD) and "currencySymbol" (e.g., $, ¥, €, £, Rp, ฿, S$, A$, ₩, CHF, C$).
+2. All "estimatedCost" values for places MUST be given in that local currency (e.g. for Tokyo in JPY ¥, for Paris or Rome in EUR €, for Bali/Jakarta in IDR Rp, for London in GBP £, for New York in USD $).
 3. Recommend only real, famous, and accessible places in ${destination}.
 4. Routes and travel times (durationMinutes, travelTimeToNext) must be realistic.
 5. Use varied durationMinutes for each place (e.g. 60, 90, 120, 150).
@@ -202,7 +202,7 @@ function getCountryCurrency(destinationStr) {
   const dest = (destinationStr || '').toLowerCase();
 
   if (dest.includes('tokyo') || dest.includes('japan') || dest.includes('kyoto') || dest.includes('osaka') || dest.includes('sapporo') || dest.includes('hiroshima') || dest.includes('fukuoka')) {
-    return { code: 'JPY', symbol: '┬Ñ', multiplier: 150 };
+    return { code: 'JPY', symbol: '¥', multiplier: 150 };
   }
   if (dest.includes('paris') || dest.includes('france') || dest.includes('rome') || dest.includes('italy') || 
       dest.includes('barcelona') || dest.includes('spain') || dest.includes('madrid') || dest.includes('amsterdam') || 
@@ -210,10 +210,10 @@ function getCountryCurrency(destinationStr) {
       dest.includes('vienna') || dest.includes('austria') || dest.includes('greece') || dest.includes('santorini') || 
       dest.includes('athens') || dest.includes('florence') || dest.includes('venice') || dest.includes('milan') || 
       dest.includes('lisbon') || dest.includes('portugal') || dest.includes('porto') || dest.includes('dublin') || dest.includes('ireland')) {
-    return { code: 'EUR', symbol: 'Ôé¼', multiplier: 0.9 };
+    return { code: 'EUR', symbol: '€', multiplier: 0.9 };
   }
   if (dest.includes('london') || dest.includes('uk') || dest.includes('england') || dest.includes('edinburgh') || dest.includes('scotland') || dest.includes('manchester')) {
-    return { code: 'GBP', symbol: '┬ú', multiplier: 0.78 };
+    return { code: 'GBP', symbol: '£', multiplier: 0.78 };
   }
   if (dest.includes('bali') || dest.includes('indonesia') || dest.includes('jakarta') || dest.includes('ubud') || 
       dest.includes('yogyakarta') || dest.includes('bromo') || dest.includes('bandung') || dest.includes('lombok') || 
@@ -221,7 +221,7 @@ function getCountryCurrency(destinationStr) {
     return { code: 'IDR', symbol: 'Rp', multiplier: 15000 };
   }
   if (dest.includes('bangkok') || dest.includes('thailand') || dest.includes('phuket') || dest.includes('chiang mai') || dest.includes('krabi') || dest.includes('koh samui')) {
-    return { code: 'THB', symbol: 'Ó©┐', multiplier: 35 };
+    return { code: 'THB', symbol: '฿', multiplier: 35 };
   }
   if (dest.includes('singapore')) {
     return { code: 'SGD', symbol: 'S$', multiplier: 1.35 };
@@ -230,7 +230,7 @@ function getCountryCurrency(destinationStr) {
     return { code: 'AUD', symbol: 'A$', multiplier: 1.5 };
   }
   if (dest.includes('seoul') || dest.includes('korea') || dest.includes('busan') || dest.includes('jeju')) {
-    return { code: 'KRW', symbol: 'Ôé®', multiplier: 1300 };
+    return { code: 'KRW', symbol: '₩', multiplier: 1300 };
   }
   if (dest.includes('dubai') || dest.includes('uae') || dest.includes('abu dhabi')) {
     return { code: 'AED', symbol: 'AED', multiplier: 3.67 };
