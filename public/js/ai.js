@@ -57,7 +57,6 @@ IMPORTANT RULES:
 6. Categories must be one of: "Culture", "Culinary", "Nature", "Adventure", "Shopping", "Relaxation".
 7. Include 3-5 practical, specific travel tips for ${destination}.
 8. Provide a realistic Plan B alternative for each place (e.g. indoor museum or covered cafe in case of rain).
-9. Every place name across ALL days must be UNIQUE. Do NOT repeat the same attraction, restaurant, or location on different days.
     
 Output must be valid JSON with this exact structure:
 {

@@ -62,7 +62,6 @@ async function handleRequest(request, env) {
     6. Write all descriptions in natural, friendly English.
     7. Categories must be one of: "Culture", "Culinary", "Nature", "Adventure", "Shopping", "Relaxation".
     8. Include 3-5 practical travel tips specific to ${destination}.
-    9. Every place name across ALL days must be UNIQUE. Do NOT repeat the same attraction, restaurant, or location on different days.
     
     Output must be valid JSON (no markdown fences) with this exact structure:
     {
