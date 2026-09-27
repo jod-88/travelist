@@ -1,4 +1,4 @@
-// ai.js - Handles Gemini API interaction (Cloudflare Pages Function, Direct Client Gemini API, or Smart Fallback)
+﻿// ai.js - Handles Gemini API interaction (Cloudflare Pages Function, Direct Client Gemini API, or Smart Fallback)
 
 const DEFAULT_GEMINI_KEY = '';
 
@@ -42,15 +42,15 @@ function extractJsonFromText(rawText) {
 /**
  * Direct Gemini API call from the client (used for Live Server or static hosting environments)
  */
-async function callGeminiDirect(destination, days, group, vibe, budget, apiKey) {
-  apiKey = apiKey || localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
+async function callGeminiDirect(destination, days, group, vibe, budget) {
+  const apiKey = localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
   if (!apiKey) throw new Error("No Gemini API key available.");
 
   const prompt = `You are an expert travel planner. Create an authentic, realistic travel itinerary to ${destination} for ${days} days for a ${group} trip. Travel style: ${vibe}. Budget tier: ${budget}.
     
 IMPORTANT RULES:
-1. Determine the country and local currency of ${destination}. Set "currencyCode" (e.g., USD, JPY, EUR, GBP, IDR, THB, SGD, AUD, KRW, CHF, CAD) and "currencySymbol" (e.g., $, ¥, €, £, Rp, ฿, S$, A$, ₩, CHF, C$).
-2. All "estimatedCost" values for places MUST be given in that local currency (e.g. for Tokyo in JPY ¥, for Paris or Rome in EUR €, for Bali/Jakarta in IDR Rp, for London in GBP £, for New York in USD $).
+1. Determine the country and local currency of ${destination}. Set "currencyCode" (e.g., USD, JPY, EUR, GBP, IDR, THB, SGD, AUD, KRW, CHF, CAD) and "currencySymbol" (e.g., $, ┬Ñ, Ôé¼, ┬ú, Rp, Ó©┐, S$, A$, Ôé®, CHF, C$).
+2. All "estimatedCost" values for places MUST be given in that local currency (e.g. for Tokyo in JPY ┬Ñ, for Paris or Rome in EUR Ôé¼, for Bali/Jakarta in IDR Rp, for London in GBP ┬ú, for New York in USD $).
 3. Recommend only real, famous, and accessible places in ${destination}.
 4. Routes and travel times (durationMinutes, travelTimeToNext) must be realistic.
 5. Use varied durationMinutes for each place (e.g. 60, 90, 120, 150).
@@ -91,8 +91,8 @@ Output must be valid JSON with this exact structure:
 }
 Return only valid JSON, no conversational markdown.`;
 
-  // Candidate models in priority order (gemini-2.5-flash is best; fallback to stable ones)
-  const candidateModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash-latest'];
+  // Candidate models in priority order
+  const candidateModels = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-3.8-flash'];
   let lastError = null;
 
   for (const model of candidateModels) {
@@ -150,62 +150,48 @@ Return only valid JSON, no conversational markdown.`;
  * 3. Smart local destination fallback (offline / completely no network)
  */
 async function generateItinerary(destination, days, group, vibe, budget) {
-  // Step 1: Try Cloudflare Pages Function (/api/generate-itinerary)
+  // Step 1: Try serverless endpoint (/api/generate-itinerary)
+  let backendFailed = false;
+
   try {
     const response = await fetch('/api/generate-itinerary', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ destination, days, group, vibe, budget })
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        destination, days, group, vibe, budget
+      })
     });
 
     const contentType = response.headers.get('content-type') || '';
-
-    // Local dev (VS Code Live Server) — no /api endpoint exists
+    // If running on a static server like VS Code Live Server, /api returns 404 or an HTML error page
     if (response.status === 404 || contentType.includes('text/html')) {
-      // Fall through to Step 2
+      backendFailed = true;
     } else if (response.ok) {
       const data = await response.json();
       if (data && data.generatedDays && data.generatedDays.length > 0) {
-        return data; // ✅ Primary path succeeded
+        return data;
       }
-      // CF function returned 200 but bad/empty data — fall through
     } else {
-      // CF function returned an error (e.g. Gemini API key issue, rate limit)
-      const errData = await response.json().catch(() => ({}));
-      const errMsg = errData?.error || errData?.errors?.[0]?.msg || `Server error ${response.status}`;
-      console.warn('CF /api error:', errMsg, '— trying direct Gemini...');
-      // Fall through to Step 2, but surface this error if Step 2 also fails
+      console.warn("Backend /api returned non-ok status:", response.status);
+      backendFailed = true;
     }
   } catch (netErr) {
-    console.warn('CF /api network error:', netErr.message);
+    backendFailed = true;
   }
 
-  // Step 2: Direct Gemini API call (client-side key or fallback relay)
-  // On Cloudflare Pages, try fetching the key via a relay endpoint
-  let clientKey = localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
-  if (!clientKey) {
-    try {
-      const keyResp = await fetch('/api/gemini-key');
-      if (keyResp.ok) {
-        const keyData = await keyResp.json();
-        clientKey = keyData?.key || '';
-      }
-    } catch (_) {}
-  }
-
-  if (clientKey) {
-    try {
-      const aiData = await callGeminiDirect(destination, days, group, vibe, budget, clientKey);
-      if (aiData && aiData.generatedDays && aiData.generatedDays.length > 0) {
-        return aiData; // ✅ Direct Gemini succeeded
-      }
-    } catch (geminiErr) {
-      console.warn('Direct Gemini error:', geminiErr.message);
+  // Step 2: Direct client-side Gemini API call
+  try {
+    const aiData = await callGeminiDirect(destination, days, group, vibe, budget);
+    if (aiData && aiData.generatedDays && aiData.generatedDays.length > 0) {
+      return aiData;
     }
+  } catch (geminiErr) {
+    console.warn("Direct Gemini call was not completed, using smart local fallback:", geminiErr.message);
   }
 
-  // Step 3: Offline local fallback — only when genuinely no network/API
-  console.error('All AI paths failed — using local mock itinerary.');
+  // Step 3: Smart destination-aware local fallback
   return generateMockItinerary(destination, days, group, vibe, budget);
 }
 
@@ -216,7 +202,7 @@ function getCountryCurrency(destinationStr) {
   const dest = (destinationStr || '').toLowerCase();
 
   if (dest.includes('tokyo') || dest.includes('japan') || dest.includes('kyoto') || dest.includes('osaka') || dest.includes('sapporo') || dest.includes('hiroshima') || dest.includes('fukuoka')) {
-    return { code: 'JPY', symbol: '¥', multiplier: 150 };
+    return { code: 'JPY', symbol: '┬Ñ', multiplier: 150 };
   }
   if (dest.includes('paris') || dest.includes('france') || dest.includes('rome') || dest.includes('italy') || 
       dest.includes('barcelona') || dest.includes('spain') || dest.includes('madrid') || dest.includes('amsterdam') || 
@@ -224,10 +210,10 @@ function getCountryCurrency(destinationStr) {
       dest.includes('vienna') || dest.includes('austria') || dest.includes('greece') || dest.includes('santorini') || 
       dest.includes('athens') || dest.includes('florence') || dest.includes('venice') || dest.includes('milan') || 
       dest.includes('lisbon') || dest.includes('portugal') || dest.includes('porto') || dest.includes('dublin') || dest.includes('ireland')) {
-    return { code: 'EUR', symbol: '€', multiplier: 0.9 };
+    return { code: 'EUR', symbol: 'Ôé¼', multiplier: 0.9 };
   }
   if (dest.includes('london') || dest.includes('uk') || dest.includes('england') || dest.includes('edinburgh') || dest.includes('scotland') || dest.includes('manchester')) {
-    return { code: 'GBP', symbol: '£', multiplier: 0.78 };
+    return { code: 'GBP', symbol: '┬ú', multiplier: 0.78 };
   }
   if (dest.includes('bali') || dest.includes('indonesia') || dest.includes('jakarta') || dest.includes('ubud') || 
       dest.includes('yogyakarta') || dest.includes('bromo') || dest.includes('bandung') || dest.includes('lombok') || 
@@ -235,7 +221,7 @@ function getCountryCurrency(destinationStr) {
     return { code: 'IDR', symbol: 'Rp', multiplier: 15000 };
   }
   if (dest.includes('bangkok') || dest.includes('thailand') || dest.includes('phuket') || dest.includes('chiang mai') || dest.includes('krabi') || dest.includes('koh samui')) {
-    return { code: 'THB', symbol: '฿', multiplier: 35 };
+    return { code: 'THB', symbol: 'Ó©┐', multiplier: 35 };
   }
   if (dest.includes('singapore')) {
     return { code: 'SGD', symbol: 'S$', multiplier: 1.35 };
@@ -244,7 +230,7 @@ function getCountryCurrency(destinationStr) {
     return { code: 'AUD', symbol: 'A$', multiplier: 1.5 };
   }
   if (dest.includes('seoul') || dest.includes('korea') || dest.includes('busan') || dest.includes('jeju')) {
-    return { code: 'KRW', symbol: '₩', multiplier: 1300 };
+    return { code: 'KRW', symbol: 'Ôé®', multiplier: 1300 };
   }
   if (dest.includes('dubai') || dest.includes('uae') || dest.includes('abu dhabi')) {
     return { code: 'AED', symbol: 'AED', multiplier: 3.67 };
@@ -254,24 +240,6 @@ function getCountryCurrency(destinationStr) {
   }
   if (dest.includes('toronto') || dest.includes('vancouver') || dest.includes('canada') || dest.includes('montreal')) {
     return { code: 'CAD', symbol: 'C$', multiplier: 1.36 };
-  }
-  if (dest.includes('beijing') || dest.includes('shanghai') || dest.includes('china') || dest.includes('guangzhou') || dest.includes('shenzhen')) {
-    return { code: 'CNY', symbol: '¥', multiplier: 7.2 };
-  }
-  if (dest.includes('malaysia') || dest.includes('kuala lumpur') || dest.includes('penang')) {
-    return { code: 'MYR', symbol: 'RM', multiplier: 4.7 };
-  }
-  if (dest.includes('vietnam') || dest.includes('hanoi') || dest.includes('ho chi minh') || dest.includes('saigon') || dest.includes('da nang')) {
-    return { code: 'VND', symbol: '₫', multiplier: 25000 };
-  }
-  if (dest.includes('india') || dest.includes('delhi') || dest.includes('mumbai') || dest.includes('goa') || dest.includes('bangalore')) {
-    return { code: 'INR', symbol: '₹', multiplier: 83 };
-  }
-  if (dest.includes('philippines') || dest.includes('manila') || dest.includes('cebu') || dest.includes('boracay')) {
-    return { code: 'PHP', symbol: '₱', multiplier: 56 };
-  }
-  if (dest.includes('new zealand') || dest.includes('auckland') || dest.includes('queenstown') || dest.includes('wellington')) {
-    return { code: 'NZD', symbol: 'NZ$', multiplier: 1.65 };
   }
   
   // Default to USD
@@ -353,7 +321,60 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
     const destTitle = destination.charAt(0).toUpperCase() + destination.slice(1);
     
     // Scale base price to currency
-    const baseCostUnit = currencyCode === 'IDR' ? 100000 : (currencyCode === 'JPY' || currencyCode === 'CNY' ? 1500 : (currencyCode === 'KRW' ? 15000 : (currencyCode === 'VND' ? 200000 : 25)));
+    const baseCostUnit = currencyCode === 'IDR' ? 100000 : (currencyCode === 'JPY' ? 1500 : (currencyCode === 'KRW' ? 15000 : 25));
+
+    rawPlaces = [
+      {
+        id: "dyn-1",
+        name: `${destTitle} Historic Old Town & Heritage Square`,
+        category: "Culture",
+        description: `Explore the iconic historic architecture, cobblestone avenues, and cultural heritage of central ${destTitle}.`,
+        estimatedCost: Math.round(baseCostUnit * 0.8),
+        durationMinutes: 120,
+        travelTimeToNext: 20,
+        planBName: `${destTitle} Municipal History Museum (Indoor)`
+      },
+      {
+        id: "dyn-2",
+        name: `${destTitle} Famous Food Trail & Local Market`,
+        category: "Culinary",
+        description: `Savor authentic regional dishes, artisan street delicacies, and traditional specialties in ${destTitle}.`,
+        estimatedCost: Math.round(baseCostUnit * 1.4),
+        durationMinutes: 90,
+        travelTimeToNext: 25,
+        planBName: `Covered Gastronomy Market Hall`
+      },
+      {
+        id: "dyn-3",
+        name: `${destTitle} Scenic Waterfront & Central Promenade`,
+        category: "Relaxation",
+        description: `Unwind with picturesque waterfront views, vibrant public squares, and relaxing open spaces.`,
+        estimatedCost: 0,
+        durationMinutes: 75,
+        travelTimeToNext: 20,
+        planBName: `Waterfront Glasshouse Cafe`
+      },
+      {
+        id: "dyn-4",
+        name: `${destTitle} Panoramic Viewpoint & Botanical Gardens`,
+        category: "Nature",
+        description: `Breathtaking elevated vistas overlooking ${destTitle} alongside lush landscaped gardens and pathways.`,
+        estimatedCost: Math.round(baseCostUnit * 0.5),
+        durationMinutes: 90,
+        travelTimeToNext: 30,
+        planBName: `Conservatory & Indoor Pavilions`
+      },
+      {
+        id: "dyn-5",
+        name: `${destTitle} Arts & Boutique Quarter`,
+        category: "Shopping",
+        description: `Browse local artisan craft shops, independent galleries, and stylish boutiques unique to ${destTitle}.`,
+        estimatedCost: Math.round(baseCostUnit * 1.2),
+        durationMinutes: 100,
+        travelTimeToNext: 15,
+        planBName: `${destTitle} Contemporary Art Gallery`
+      }
+    ];
 
     tips = [
       `Check local transit cards and day passes for easy travel around ${destTitle}.`,
@@ -361,76 +382,6 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
       `Reserve top attractions and famous restaurants in ${destTitle} ahead of time.`,
       `Learn basic greeting phrases in the local language to connect with residents.`
     ];
-  }
-
-  // Determine places per day based on total days to keep it balanced
-  let placesPerDay = 4;
-  if (days >= 7) {
-    placesPerDay = 2;
-  } else if (days >= 4) {
-    placesPerDay = 3;
-  }
-  
-  const totalNeeded = days * placesPerDay;
-  const destTitle = destination.charAt(0).toUpperCase() + destination.slice(1);
-  const baseCostUnit = currencyCode === 'IDR' ? 100000 : (currencyCode === 'JPY' || currencyCode === 'CNY' ? 1500 : (currencyCode === 'KRW' ? 15000 : (currencyCode === 'VND' ? 200000 : 25)));
-  
-  // Rich name templates for dynamic fallback generation so names are natural and varied
-  const nameTemplates = {
-    "Culture": [
-      "Historic Old Town of {dest}", "Royal Palace & Heritage Museum in {dest}", "{dest} Ancient Temple Complex",
-      "National Art Gallery of {dest}", "Traditional {dest} Village Walk", "{dest} Cultural Performance Theater",
-      "The Great {dest} Monument", "{dest} Museum of Natural History"
-    ],
-    "Culinary": [
-      "{dest} Famous Night Market", "Authentic {dest} Street Food Alley", "High-End Gastronomy in {dest}",
-      "{dest} Central Farmers Market", "Hidden Local Cafes of {dest}", "{dest} Spice & Ingredient Tour",
-      "Riverside Seafood Dining in {dest}", "Traditional {dest} Tea House"
-    ],
-    "Nature": [
-      "{dest} Grand Botanical Gardens", "Panoramic Peak Viewpoint over {dest}", "{dest} National Forest Park",
-      "Scenic Lake & Trails of {dest}", "{dest} Coastal Walk", "Hidden Waterfall near {dest}",
-      "{dest} Wildlife Sanctuary", "Crystal Clear Lakes of {dest}"
-    ],
-    "Adventure": [
-      "{dest} Skyline Observation Deck", "Theme Park & Thrill Rides in {dest}", "{dest} Off-Road Safari",
-      "Mountain Cable Car of {dest}", "{dest} Bridge Climb Experience", "River Rafting & Kayaking in {dest}",
-      "Underground Caves of {dest}", "Zip Lining Across {dest} Valleys"
-    ],
-    "Shopping": [
-      "{dest} Grand Shopping Boulevard", "Vintage & Antiques Quarter in {dest}", "{dest} Luxury Retail District",
-      "Traditional Handicraft Souk in {dest}", "{dest} Fashion & Design Hub", "The Mega Mall of {dest}",
-      "{dest} Weekend Artisan Market", "Boutique Alleyways in {dest}"
-    ],
-    "Relaxation": [
-      "{dest} Thermal Baths & Spa", "Sunset Cruise in {dest}", "{dest} Private Beach Club",
-      "Rooftop Lounge & Bar in {dest}", "Tranquil Zen Gardens of {dest}", "{dest} Riverfront Promenade",
-      "Secluded Hot Springs near {dest}", "Luxury Wellness Retreat in {dest}"
-    ]
-  };
-
-  const categories = ["Culture", "Culinary", "Relaxation", "Nature", "Shopping", "Adventure"];
-
-  // Ensure we have exactly totalNeeded unique places by dynamically generating them
-  let catCounts = { "Culture": 0, "Culinary": 0, "Relaxation": 0, "Nature": 0, "Shopping": 0, "Adventure": 0 };
-  
-  while (rawPlaces.length < totalNeeded) {
-    let cat = categories[rawPlaces.length % categories.length];
-    let count = catCounts[cat]++;
-    let templates = nameTemplates[cat];
-    let template = templates[count % templates.length];
-    let placeName = template.replace(/{dest}/g, destTitle);
-
-    rawPlaces.push({
-      id: `dyn-gen-${rawPlaces.length}`,
-      name: placeName,
-      category: cat,
-      description: `Discover an amazing ${cat.toLowerCase()} experience at this renowned spot in ${destTitle}.`,
-      estimatedCost: Math.round(baseCostUnit * (0.8 + (count % 3) * 0.4)),
-      durationMinutes: 90 + (count % 3) * 15,
-      travelTimeToNext: 15 + (count % 4) * 5,
-      planBName: `${destTitle} Indoor ${cat} Pavilion`
-    });
   }
 
   // Adjust place costs to match currency & budget tier
@@ -453,22 +404,14 @@ async function generateMockItinerary(destination, days, group, vibe, budget) {
   });
 
   const generatedDays = [];
-  let placeCounter = 0;
-
   for (let i = 1; i <= days; i++) {
-    const dayPlaces = [];
-    for (let j = 0; j < placesPerDay; j++) {
-      if (placeCounter < places.length) {
-        const p = places[placeCounter];
-        dayPlaces.push({
-          ...p,
-          id: `${p.id}-d${i}-${j}`,
-          travelTimeToNext: p.travelTimeToNext || (15 + ((j * 7) % 25))
-        });
-        placeCounter++;
-      }
-    }
-
+    // Rotate and pick places for each day so multi-day trips look dynamic
+    const dayPlaces = places.map((p, idx) => ({
+      ...p,
+      id: `${p.id}-d${i}-${idx}`,
+      travelTimeToNext: p.travelTimeToNext || (15 + ((idx * 7) % 25))
+    }));
+    
     generatedDays.push({
       dayNumber: i,
       places: dayPlaces

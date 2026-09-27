@@ -1,7 +1,7 @@
-export async function onRequestPost(context) {
+﻿export async function onRequestPost(context) {
   const { request, env } = context;
 
-  // Top-level safety net — ensures we ALWAYS return valid JSON, never an empty body
+  // Top-level safety net ÔÇö ensures we ALWAYS return valid JSON, never an empty body
   try {
     return await handleRequest(request, env);
   } catch (unexpectedError) {
@@ -54,8 +54,8 @@ async function handleRequest(request, env) {
   const prompt = `You are an expert travel planner. Create a travel itinerary to ${destination} for ${days} days for a ${group} trip. Travel style: ${vibe}. Budget tier: ${budget}.
     
     IMPORTANT RULES:
-    1. Determine the country of ${destination} and set "currencyCode" (e.g., USD, JPY, EUR, GBP, IDR, THB, SGD, AUD, KRW) and "currencySymbol" (e.g., $, ¥, €, £, Rp, ฿, S$, A$, ₩) matching that country.
-    2. All "estimatedCost" values for places MUST be given in that local currency (e.g. for Tokyo in JPY ¥, for Paris in EUR €, for Bali in IDR Rp, for New York in USD $).
+    1. Determine the country of ${destination} and set "currencyCode" (e.g., USD, JPY, EUR, GBP, IDR, THB, SGD, AUD, KRW) and "currencySymbol" (e.g., $, ┬Ñ, Ôé¼, ┬ú, Rp, Ó©┐, S$, A$, Ôé®) matching that country.
+    2. All "estimatedCost" values for places MUST be given in that local currency (e.g. for Tokyo in JPY ┬Ñ, for Paris in EUR Ôé¼, for Bali in IDR Rp, for New York in USD $).
     3. Never recommend illegal, dangerous, or permanently closed locations.
     4. Routes and travel times (durationMinutes, travelTimeToNext) must be realistic, accounting for distance and potential traffic.
     5. Use varied and realistic durationMinutes for each place. Do NOT use the same duration for every place.
@@ -88,7 +88,7 @@ async function handleRequest(request, env) {
     Return only valid JSON, no additional text.`;
 
   // Candidate models in priority order
-  const candidateModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash-latest'];
+  const candidateModels = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-3.8-flash'];
   let geminiResponse = null;
   let geminiData = null;
   let lastError = null;
@@ -143,11 +143,8 @@ async function handleRequest(request, env) {
   // Extract and parse the generated itinerary JSON
   try {
     const text = geminiData.candidates[0].content.parts[0].text;
-    // Strip markdown fences robustly before parsing
-    const jsonStr = text
-      .replace(/^```(?:json)?\s*/i, '')
-      .replace(/\s*```\s*$/i, '')
-      .trim();
+    // Strip markdown code fences if present
+    const jsonStr = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
     const itineraryData = JSON.parse(jsonStr);
 
     return new Response(JSON.stringify(itineraryData), {
