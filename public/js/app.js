@@ -347,14 +347,17 @@ function startLoadingOverlay() {
 
   updateProgressUI(0);
 
-  // Increment up to 90% while waiting for async response
+  // Increment smoothly: fast early, steady near the cap so it never visibly stalls
   intervalId = setInterval(() => {
     if (currentPercent < 90) {
-      const increment = Math.max(0.6, (90 - currentPercent) * 0.07);
-      currentPercent += increment;
+      // Faster in early stages, small-but-steady near the cap
+      const increment = currentPercent < 60
+        ? Math.max(1.2, (90 - currentPercent) * 0.055)
+        : 0.35; // constant steady tick near 90% to avoid stalling
+      currentPercent = Math.min(90, currentPercent + increment);
       updateProgressUI(currentPercent);
     }
-  }, 70);
+  }, 80);
 
   return {
     finish: () => {

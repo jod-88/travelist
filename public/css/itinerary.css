@@ -10,7 +10,7 @@
 .dashboard-hero {
   position: relative;
   padding: 2.5rem 0 2rem;
-  background: linear-gradient(135deg, var(--color-secondary) 0%, #1a365d 50%, var(--color-accent) 100%);
+  background: linear-gradient(135deg, var(--color-secondary) 0%, #0f3460 50%, #1e4db7 100%);
   color: white;
   overflow: hidden;
   width: 100%;
@@ -20,7 +20,7 @@
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.06) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(108, 99, 255, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.12) 0%, transparent 50%),
                     radial-gradient(circle at 60% 80%, rgba(255, 126, 89, 0.08) 0%, transparent 40%);
 }
 
@@ -322,7 +322,7 @@
 /* Category Colors — English */
 .card-category[data-category="Culture"] {
   background: var(--color-accent-light);
-  color: var(--color-accent);
+  color: #1d4ed8;
 }
 .card-category[data-category="Culinary"] {
   background: var(--color-warning-light);
@@ -379,10 +379,10 @@
 .card-planb {
   font-size: 0.8rem;
   color: var(--color-text-light);
-  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  background: linear-gradient(135deg, #f8fafc, #f0f7ff);
   padding: 0.625rem 0.875rem;
   border-radius: var(--radius-md);
-  border: 1px dashed rgba(108, 99, 255, 0.2);
+  border: 1px dashed rgba(37, 99, 235, 0.18);
 }
 
 .card-planb strong {
